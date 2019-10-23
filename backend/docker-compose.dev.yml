@@ -1,0 +1,32 @@
+version: "3.4"
+
+networks:
+  db_net:
+    external: true
+
+services:
+  server:
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      - RUN_LEVEL=dev
+    build:
+      dockerfile: docker/Dockerfile.server
+      context: .
+      target: dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - ".:/code"
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: northstar
+    networks:
+      - db_net

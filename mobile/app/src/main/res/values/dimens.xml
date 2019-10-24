@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Text sizes -->
+    <dimen name="text_size_40">40sp</dimen>
+    <dimen name="text_size_26">26sp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="text_size_17">17sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_13">13sp</dimen>
+
+    <!-- Toolbar -->
+    <dimen name="toolbar_content_inset_start">24dp</dimen>
+
+    <!-- Home Fragment -->
+    <dimen name="home_car_iv_margin_top">16dp</dimen>
+    <dimen name="home_car_iv_margin_bottom">25dp</dimen>
+    <dimen name="home_about_tv_margin_start">30dp</dimen>
+    <dimen name="home_about_tv_margin_end">25dp</dimen>
+    <dimen name="home_about_tv_margin_bottom">30dp</dimen>
+    <dimen name="home_scab_button_height">45dp</dimen>
+    <dimen name="home_scab_button_margin_start">40dp</dimen>
+    <dimen name="home_scab_button_margin_end">40dp</dimen>
+    <dimen name="home_scab_button_margin_bottom">35dp</dimen>
+    <dimen name="home_car_iv_margin_start">16dp</dimen>
+    <dimen name="home_car_iv_margin_end">16dp</dimen>
+
+    <!-- Scan result view -->
+    <dimen name="scan_result_iv_width">0dp</dimen>
+    <dimen name="scan_result_iv_height">0dp</dimen>
+    <dimen name="scan_result_iv_margin_start">20dp</dimen>
+    <dimen name="scan_result_iv_margin_top">20dp</dimen>
+    <dimen name="scan_result_iv_margin_bottom">20dp</dimen>
+    <dimen name="scan_result_auto_number_tv_margin_start">15dp</dimen>
+    <dimen name="scan_result_auto_number_tv_margin_top">17dp</dimen>
+    <dimen name="scan_result_date_tv_margin_bottom">23dp</dimen>
+    <dimen name="scan_result_view_divider_margin_end">20dp</dimen>
+    <dimen name="scan_result_view_divider_margin_start">20dp</dimen>
+    <dimen name="scan_result_view_accuracy_tv_margin_top">25dp</dimen>
+    <dimen name="scan_result_view_accuracy_tv_margin_end">20dp</dimen>
+    <dimen name="scan_result_view_accuracy_tv_margin_bottom">25dp</dimen>
+    <dimen name="accuracy_shape_radius">15dp</dimen>
+    <dimen name="scan_accuracy_tv_width">75dp</dimen>
+    <dimen name="scan_accuracy_tv_height">30dp</dimen>
+    <dimen name="round_corner_radius">2dp</dimen>
+    <dimen name="scan_result_view_height">80dp</dimen>
+
+    <!-- Divider -->
+    <dimen name="divider_height">1dp</dimen>
+</resources>

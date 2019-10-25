@@ -8,6 +8,7 @@ networks:
 
 services:
   nginx:
+    network_mode: host
     image: nginx:latest
     container_name: nginx_proxy
     volumes:
@@ -17,9 +18,8 @@ services:
       - 443:443
     depends_on:
       - northstar
-    networks:
-      - default
   northstar:
+    network_mode: host
     restart: unless-stopped
     environment:
       - RUN_LEVEL=dev
@@ -27,13 +27,13 @@ services:
       dockerfile: docker/Dockerfile.server
       context: northstar
       target: dev
+    ports:
+      - 8000:8000
     volumes:
       - "./northstar:/code"
     depends_on:
       - postgres
       - redis
-    networks:
-      - default
   postgres:
     image: postgres
     ports:
@@ -44,7 +44,6 @@ services:
       POSTGRES_DB: northstar
     networks:
       - db_net
-      - default
     volumes:
       - "../.docker_data/postgres:/var/lib/postgresql/data"
   redis:
@@ -53,5 +52,3 @@ services:
       - 6379:6379
     volumes:
       - "../.docker_data/redis:/data"
-    networks:
-      - default

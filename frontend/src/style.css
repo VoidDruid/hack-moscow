@@ -1,0 +1,29 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+.root-container {
+    display: grid;
+    grid-template-areas: 'menu content content content tool tool';
+    height: 100vh;
+}
+.root-menu {
+grid-area: menu;
+border: 1px dashed darkred;
+}
+
+.root-content {
+    grid-area: content;
+    border: 1px dashed aquamarine;
+}
+.root-tool {
+    grid-area: tool;
+    border: 1px dashed blueviolet;
+    padding: 15px;
+}
+
+#here-map {
+    width: 100%;
+    height: 100vh;
+    background: grey;
+}

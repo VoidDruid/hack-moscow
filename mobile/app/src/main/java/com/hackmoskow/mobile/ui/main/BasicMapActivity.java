@@ -1,6 +1,7 @@
 package com.hackmoskow.mobile.ui.main;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.hackmoskow.mobile.R;
+import com.hackmoskow.mobile.presenters.MainController;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.GeoPosition;
 import com.here.android.mpa.common.OnEngineInitListener;
@@ -39,14 +41,20 @@ public class BasicMapActivity extends FragmentActivity {
     private Map map = null;
     private AndroidXMapFragment mapFragment = null;
     private PositioningManager posManager;
+    private MainController controller;
     private PositioningManager.OnPositionChangedListener positionListener = new
             PositioningManager.OnPositionChangedListener() {
 
                 public void onPositionUpdated(PositioningManager.LocationMethod method,
                                               GeoPosition position, boolean isMapMatched) {
                     if (!paused) {
-                        map.setCenter(position.getCoordinate(),
-                                Map.Animation.NONE);
+                        try {
+                            map.setCenter(position.getCoordinate(),
+                                    Map.Animation.LINEAR);
+                            controller.positionChanged(position.getCoordinate());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 
@@ -59,12 +67,35 @@ public class BasicMapActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkPermissions();
+
         posManager = PositioningManager.getInstance();
         posManager.addListener(new WeakReference<>(positionListener));
         if (posManager != null) {
             posManager.start(
                     PositioningManager.LocationMethod.GPS_NETWORK);
         }
+        controller = new MainController(this);
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        System.out.println("Resume");
+        onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        System.out.println("Start");
+        onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        System.out.println("Stop");
+        onPause();
     }
 
     private void initialize() {
@@ -109,7 +140,7 @@ public class BasicMapActivity extends FragmentActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_CODE_ASK_PERMISSIONS:
@@ -144,12 +175,8 @@ public class BasicMapActivity extends FragmentActivity {
         paused = true;
     }
 
-    public void onDestroy() {
-        if (posManager != null) {
-            posManager.removeListener(
-                    positionListener);
-        }
-        map = null;
-        super.onDestroy();
+    @SuppressLint("ShowToast")
+    public void showLostConnection() {
+        Toast.makeText(this, "Lost connection with server.", Toast.LENGTH_SHORT);
     }
 }

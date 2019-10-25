@@ -1,17 +1,36 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hackmoskow.mobile">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true"/>
+
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data android:name="com.here.android.maps.appid" android:value="L1zgUr9dIU3DWvM87avb"/>
+        <meta-data android:name="com.here.android.maps.apptoken" android:value="mIfTsjQp6-vFseNbM3o5Sw"/>
+        <meta-data android:name="com.here.android.maps.license.key" android:value="Jgwbv3a2cJfe156RTgcOeHB1UbWyLqqT9DC/MUll9DOutw0N4/+FG6Q4++rL2daXhB+8OCKrFMthrE4CdRu5vSNpxNd5zxuLThuitKbCwMctPB9OC9Ns1zE5NBGpFweZ8v55L5j1FO7Az/qIWhBzQ2HG0uqBDBkaIWqFH0HDUcChlLOPMp0LxL1Rrf5Fm3pNiLADmLT6lrm+TfKYv7598mLJCOg+rsif3QT7dWD6Y0/ZvU3PyGp4j9NF0Xm9k1Ko5DguRtvfrwjewKkbKO5e3j6R41rkJoJU5tReiyHtziegytZEAWX7HbFxBYW4sKTptZPmhmE7yz0LBiUB2ZjlTiRJTHlkSoIFeJmJ8xN+qG4y2Jlt0jTg0zjaD90WdSN8SHznESeEvQuTja7wXlFvEmi4VQiuMz/UACKPQ0t6NUFCwxG1Z0befqJmlCxyPP3OD7suWrdHqmrJHGbyne7Z18XtnBLJosutc8z99wybjNJjPFut7+u9KKKffSV+65/bmR+VEkgnwGYoqVmxp4gL+8am5kYRPc9HDlxTwKTHbEwsgQgWAhUkU3CI7hn52Mdz2RCKLRmortVlCMr4jG+0l2BKHhbB3hDcUuRY1XC+XpFaqJw3rCWvvz07e18cNva/tzyoIvvYyoKSpnIbAMsCh76s75j2SVQWz6gC042mQ0w="/>
+
         <activity
             android:name=".ui.main.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".ui.main.BasicMapActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

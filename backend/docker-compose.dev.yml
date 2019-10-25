@@ -11,13 +11,13 @@ services:
     environment:
       - RUN_LEVEL=dev
     build:
-      dockerfile: docker/Dockerfile.server
+      dockerfile: northstar/docker/Dockerfile.server
       context: .
       target: dev
     ports:
       - "8000:8000"
     volumes:
-      - ".:/code"
+      - "./northstar:/code"
     depends_on:
       - postgres
   postgres:

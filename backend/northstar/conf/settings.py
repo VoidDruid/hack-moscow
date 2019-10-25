@@ -1,5 +1,9 @@
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv(verbose=True)
+
 from conf.envs.env_utils import getenv_bool
 
 

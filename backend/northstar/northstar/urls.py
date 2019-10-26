@@ -13,5 +13,6 @@ urlpatterns = [
     path('org', OrganisationsListView.as_view()),
     path('org/<int:id>', OrganisationDetailView.as_view()),
     path('categories', CategoriesListView.as_view()),
-    path('users/<str:uid>/recommend', RecommendationsListView.as_view())
+    path('users/<str:uid>/recommend', RecommendationsListView.as_view()),
+    path('org/<int:id>/event', EventByOrgListView.as_view()),
 ]

@@ -85,9 +85,13 @@ public class BasicMapActivity extends FragmentActivity {
     private GeoPosition centerPosition;
     private boolean isPlacesObtained = false;
     private List<MapObject> markers;
+    private List<MapObject> events;
     private GeoCoordinate lastEventCoordinate;
     private List<CategoriesRepository.Category> categories;
     private MapRoute mapRoute;
+    private boolean shouldShowRoute = false;
+    private double latitude;
+    private double longitude;
     private PositioningManager.OnPositionChangedListener positionListener = new
             PositioningManager.OnPositionChangedListener() {
 
@@ -101,6 +105,11 @@ public class BasicMapActivity extends FragmentActivity {
                             if (!isPlacesObtained) {
                                 controller.readyForGetPlaces(centerPosition.getCoordinate());
                                 isPlacesObtained = true;
+                            }
+
+                            if (shouldShowRoute) {
+                                showRout(centerPosition.getCoordinate(), new GeoCoordinate(latitude, longitude));
+                                shouldShowRoute = false;
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -116,6 +125,14 @@ public class BasicMapActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        latitude = intent.getDoubleExtra("latitude", 0);
+        longitude = intent.getDoubleExtra("longitude", 0);
+
+        if (latitude != 0 && longitude != 0) {
+            shouldShowRoute = true;
+        }
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -134,6 +151,7 @@ public class BasicMapActivity extends FragmentActivity {
         categories = new ArrayList<>();
         markers = new ArrayList<>();
         lastEventCoordinate = new GeoCoordinate(0, 0);
+        events = new ArrayList<>();
         mapRoute = new MapRoute();
     }
 
@@ -276,11 +294,35 @@ public class BasicMapActivity extends FragmentActivity {
 
     @OnClick(R.id.nav_btn)
     public void searchMe() {
+        if (centerPosition == null) {
+            return;
+        }
         map.setCenter(centerPosition.getCoordinate(), Map.Animation.LINEAR);
         map.setZoomLevel(10);
     }
 
+    @OnClick(R.id.car_ib)
+    public void carPressed() {
+        mapRoute.setVisible(!mapRoute.isVisible());
+    }
+
+    @OnClick(R.id.events_ib)
+    public void eventsPressed() {
+        for (MapObject event : events) {
+            event.setVisible(!event.isVisible());
+        }
+    }
+
+    @OnClick(R.id.places_ib)
+    public void placesPressed() {
+        for (MapObject marker : markers) {
+            marker.setVisible(!marker.isVisible());
+        }
+    }
+
     public void showEvents(List<Event> events) {
+        map.removeMapObjects(this.events);
+        this.events.clear();
         for (Event event : events) {
             MapMarker mapMarker = new MapMarker(new GeoCoordinate(event.getLat(), event.getLongitude()));
             mapMarker.setTitle("Event");
@@ -293,6 +335,7 @@ public class BasicMapActivity extends FragmentActivity {
             }
             mapMarker.showInfoBubble();
             map.addMapObject(mapMarker);
+            this.events.add(mapMarker);
         }
     }
 
@@ -367,7 +410,7 @@ public class BasicMapActivity extends FragmentActivity {
     }
 
     public void showRout(GeoCoordinate from, GeoCoordinate to) {
-        map.removeMapObject((MapObject)mapRoute);
+        map.removeMapObject((MapObject) mapRoute);
         RouteManager rm = new RouteManager();
 
         RoutePlan routePlan = new RoutePlan();
@@ -381,6 +424,22 @@ public class BasicMapActivity extends FragmentActivity {
         routePlan.setRouteOptions(routeOptions);
 
         rm.calculateRoute(routePlan, new RouteListener());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case (100): {
+                if (resultCode == Activity.RESULT_OK) {
+                    boolean isRoute = data.getBooleanExtra("route", false);
+                    if (isRoute) {
+                        showRout(centerPosition.getCoordinate(), lastEventCoordinate);
+                    }
+                }
+                break;
+            }
+        }
     }
 
     private class RouteListener implements RouteManager.Listener {
@@ -397,25 +456,8 @@ public class BasicMapActivity extends FragmentActivity {
                 // Render the route on the map
                 mapRoute = new MapRoute(routeResult.get(0).getRoute());
                 map.addMapObject(mapRoute);
-            }
-            else {
+            } else {
                 // Display a message indicating route calculation failure
-            }
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode) {
-            case (100) : {
-                if (resultCode == Activity.RESULT_OK) {
-                    boolean isRoute = data.getBooleanExtra("route", false);
-                    if (isRoute) {
-                        showRout(centerPosition.getCoordinate(), lastEventCoordinate);
-                    }
-                }
-                break;
             }
         }
     }

@@ -97,16 +97,16 @@ public class MainController implements PositionSenderServiceCallback {
 
     public void readyForGetPlaces(GeoCoordinate coordinate) {
         executor.execute(() -> {
-            List<Places> places = placesRepository.getPlaces(coordinate.getLatitude(), coordinate.getLongitude());
+            List<Places> places = placesRepository.getPlaces(coordinate.getLatitude(), coordinate.getLongitude(), "restaurant");
             List<CategoriesRepository.Category> categories = categoriesRepository.getCategories();
-            List<Event> events = eventsRepository.getEvents();
+            List<Event> events = eventsRepository.getEvents("restaurant");
             this.places.clear();
             this.places.addAll(places);
             this.events.clear();
             this.events.addAll(events);
             mainThread.post(() -> {
-                view.showNearestPlaces(places);
                 view.setCategories(categories);
+                view.showNearestPlaces(places);
                 view.showEvents(events);
             });
         });
@@ -115,10 +115,16 @@ public class MainController implements PositionSenderServiceCallback {
     public void categoriesSelected(CategoriesRepository.Category categories) {
         executor.execute(() -> {
             List<Places> places = placesRepository.getPlaces(getCoordinate().getLatitude(), getCoordinate().getLongitude(), categories.getId());
+            List<Event> events = eventsRepository.getEvents(categories.getId());
+
             this.places.clear();
             this.places.addAll(places);
+            this.events.clear();
+            this.events.addAll(events);
+
             mainThread.post(() -> {
                 view.showNearestPlaces(places);
+                view.showEvents(events);
             });
         });
     }

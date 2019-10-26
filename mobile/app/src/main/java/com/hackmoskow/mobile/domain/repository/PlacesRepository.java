@@ -32,38 +32,8 @@ public class PlacesRepository {
         places.add(new Places(new GeoCoordinate(55.816991, 37.574572), "Ламповед", "Финансы", 50));
     }
 
-    public List<Places> getPlaces(double latitude, double longitude) {
-        try {
-            URL urlForGetRequest = new URL("http://spacehub.su/api/users/" + getUniqId() + "/search?" +
-                    "lat=" + latitude + "&long=" + longitude);
-            String readLine;
-            HttpURLConnection connection = (HttpURLConnection) urlForGetRequest.openConnection();
-            connection.setRequestMethod("GET");
-            int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(connection.getInputStream()));
-                StringBuffer response = new StringBuffer();
-                while ((readLine = in.readLine()) != null) {
-                    response.append(readLine);
-                }
-                in.close();
-                // print result
-                System.out.println("JSON String Result " + response.toString());
-                generatePlacesFromJson(response.toString());
-            } else {
-                System.out.println("GET NOT WORKED");
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return places;
-    }
-
     public List<Places> getPlaces(double latitude, double longitude, String categories) {
+        places.clear();
         try {
             URL urlForGetRequest = new URL("http://spacehub.su/api/users/" + getUniqId() + "/search?" +
                     "lat=" + latitude + "&long=" + longitude + "&category=" + categories);
@@ -74,7 +44,7 @@ public class PlacesRepository {
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(connection.getInputStream()));
-                StringBuffer response = new StringBuffer();
+                StringBuilder response = new StringBuilder();
                 while ((readLine = in.readLine()) != null) {
                     response.append(readLine);
                 }
@@ -85,7 +55,6 @@ public class PlacesRepository {
             } else {
                 System.out.println("GET NOT WORKED");
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {

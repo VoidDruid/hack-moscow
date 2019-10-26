@@ -4,17 +4,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.hackmoskow.mobile.R;
+import com.hackmoskow.mobile.ui.main.BasicMapActivity;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +36,7 @@ public class EventActivity extends Activity {
     private double longitude;
     private String title;
     private String description;
+    private boolean isModuleOpened;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,23 +46,49 @@ public class EventActivity extends Activity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        titleTextView.setText(intent.getStringExtra("title"));
-        descriptionTextView.setText(intent.getStringExtra("description"));
-        if (intent.getStringExtra("description").isEmpty()) {
-            descriptionTextView.setVisibility(View.GONE);
+
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            isModuleOpened = true;
+            Uri uri = intent.getData();
+            titleTextView.setText(uri.getQueryParameter("title"));
+            String description = uri.getQueryParameter("description");
+            descriptionTextView.setText(description);
+            if (description == null) {
+                descriptionTextView.setVisibility(View.GONE);
+            }
+            latitude = Double.parseDouble(Objects.requireNonNull(uri.getQueryParameter("latitude")));
+            longitude = Double.parseDouble(Objects.requireNonNull(uri.getQueryParameter("longitude")));
+            description = uri.getQueryParameter("description");
+            title = uri.getQueryParameter("title");
+
+        } else {
+            isModuleOpened = false;
+
+            titleTextView.setText(intent.getStringExtra("title"));
+            descriptionTextView.setText(intent.getStringExtra("description"));
+            if (intent.getStringExtra("description").isEmpty()) {
+                descriptionTextView.setVisibility(View.GONE);
+            }
+            latitude = intent.getDoubleExtra("latitude", 0);
+            longitude = intent.getDoubleExtra("longitude", 0);
+            description = intent.getStringExtra("description");
+            title = intent.getStringExtra("title");
         }
-        latitude = intent.getDoubleExtra("latitude", 0);
-        longitude = intent.getDoubleExtra("longitude", 0);
-        description = intent.getStringExtra("description");
-        title = intent.getStringExtra("title");
     }
 
     @OnClick(R.id.rout_btn)
     public void route() {
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra("route", true);
-        setResult(Activity.RESULT_OK, resultIntent);
-        finish();
+        if (!isModuleOpened) {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("route", true);
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
+        } else {
+            Intent intent = new Intent(this, BasicMapActivity.class);
+            intent.putExtra("latitude", latitude);
+            intent.putExtra("longitude", longitude);
+            startActivity(intent);
+        }
     }
 
     @OnClick(R.id.event_close_btn)
@@ -96,6 +127,12 @@ public class EventActivity extends Activity {
                 str.append(addresses.get(0).getAddressLine(0));
 
                 str.append("\n\n________\n");
+                str.append("http://app.hackmoscow/gizmos?title=").append(title.replaceAll(" ", "+"))
+                        .append("&description=").append(description.replaceAll(" ", "+"))
+                        .append("&latitude=").append(latitude)
+                        .append("&longitude=").append(longitude);
+                str.append("\n________\n\n");
+
                 str.append("Send from application");
                 return  str.toString();
             } else {

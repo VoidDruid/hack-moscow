@@ -20,9 +20,14 @@ public class EventsRepository {
         this.events = new ArrayList<>();
     }
 
-    public List<Event> getEvents() {
+    public List<Event> getEvents(String category) {
+        events.clear();
         try {
-            URL urlForGetRequest = new URL("http://spacehub.su/api/org/event");
+            StringBuilder stringBuilder = new StringBuilder("http://spacehub.su/api/org/event");
+            if (!category.isEmpty()) {
+                stringBuilder.append("?category=").append(category);
+            }
+            URL urlForGetRequest = new URL(stringBuilder.toString());
             String readLine;
             HttpURLConnection connection = (HttpURLConnection) urlForGetRequest.openConnection();
             connection.setRequestMethod("GET");

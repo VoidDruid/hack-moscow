@@ -18,11 +18,10 @@ public class CategoriesRepository {
 
     public CategoriesRepository() {
         this.categories = new ArrayList<>();
-
-        categories.add(new Category("First", "f_1"));
     }
 
     public List<Category> getCategories() {
+        categories.clear();
         try {
             URL urlForGetRequest = new URL("http://spacehub.su/api/categories");
             String readLine;

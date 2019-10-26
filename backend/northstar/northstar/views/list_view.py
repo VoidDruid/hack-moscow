@@ -35,6 +35,7 @@ class PlacesListView(generics.ListAPIView):
         Places
     """
     lookup_field = 'uid'
+    serializer_class = None
 
     def list(self, request, *args, **kwargs):
         lat = request.GET.get('lat')

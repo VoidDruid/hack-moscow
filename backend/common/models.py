@@ -5,3 +5,4 @@ class ProvidedLocation(BaseModel):
     long: float
     lat: float
     duration: int
+    city: str

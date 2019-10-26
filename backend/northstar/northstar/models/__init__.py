@@ -1,1 +1,1 @@
-from .models import User, UserCategory
+from .models import *

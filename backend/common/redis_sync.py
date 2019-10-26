@@ -10,7 +10,10 @@ REDIS_CACHE_TTL = 24*60*60*90
 
 
 def full_cache_key(prefix, key):
-    return '{}{}{}'.format(prefix, REDIS_KEY_SEPARATOR, key)
+    separator = ''
+    if prefix:
+        separator = REDIS_KEY_SEPARATOR
+    return '{}{}{}'.format(prefix, separator, key)
 
 
 def strip_cache_key(key):

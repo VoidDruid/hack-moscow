@@ -1,9 +1,14 @@
+import os
 import traceback
 
 import herepy
 import requests
 
-from conf.settings import HERE_APP_CODE, HERE_APP_ID
+HERE_APP_ID = os.getenv('HERE_APP_ID', 'gg8kFeV8gw9f89RVtLsN')
+HERE_APP_CODE = os.getenv('HERE_APP_CODE', 'KmSywE6j0T04PQ23btBnqA')
+
+if not HERE_APP_CODE or not HERE_APP_ID:
+    raise ValueError('Provide HERE app id and code')
 
 
 class HereWrapper:
@@ -30,7 +35,6 @@ class HereWrapper:
         if not result.ok:
             return None
         return result.json()['results']['items'][0]
-
 
 
 class HerePlacesApi:
@@ -74,4 +78,3 @@ class HerePlacesApi:
 
 HERE = HerePlacesApi()
 here = HereWrapper()
-# print(her.get_place_by_location({'long':37.7905, 'lat':-122.4107}, "restaurant"))

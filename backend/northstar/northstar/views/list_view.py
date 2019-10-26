@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from northstar.models import *
 from northstar.serializers import *
 from northstar.models.categories import categories_json
-from here import HERE
+from common.here_api import HERE
 
 
 class UserListView(generics.ListCreateAPIView):

@@ -3,21 +3,22 @@ from django.db import models
 # from .validators import
 from .categories import categories_json
 
-'''
+
 class CategoryChoices:
-    data = {}
 
     @classmethod
     def make(cls):
         choice = []
-        for category in cls.data:
-            setattr(cls, name(), )
-            choice.append((id, title))
-        setattr(cls, 'cHOicEs', choice)
+        for category in categories_json:
+            setattr(cls, category['id'].replace('-', '_').upper(), category['id'])
+            choice.append((category['id'].replace('-', '_').upper(), category['title']))
+        setattr(cls, 'CHOICES', choice)
 
     def to_list(self):
         return [choice[1] for choice in self.CHOICES]
-'''
+
+
+CategoryChoices.make()
 
 
 class SexChoices:
@@ -41,10 +42,11 @@ class EventType:
 
 
 class Organization(models.Model):
+    title = models.CharField(max_length=50, null=False)
     login = models.CharField(max_length=100, null=False, unique=True)
     password = models.BinaryField(max_length=32, null=False)
     address = models.CharField(max_length=100, null=False)
-    category = models.CharField(max_length=100, null=False)
+    category = models.CharField(max_length=100, null=False, choices=CategoryChoices.CHOICES)
     long = models.FloatField(null=True)
     lat = models.FloatField(null=True)
 

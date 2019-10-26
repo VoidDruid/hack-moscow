@@ -3,23 +3,20 @@ import string
 
 from django.core.management.base import BaseCommand
 
-from northstar.models import User
+from northstar.models import Event, Organization, EventType
 
 
 class Command(BaseCommand):
-    list_of_sex = ['M'] * 15 + ['F'] * 10 + ['NB'] * 5
-    list_of_ages = []
-    list_of_ages += (list(range(16, 20)) * 7)
-    list_of_ages += (list(range(21, 35)) * 15)
-    list_of_ages += (list(range(35, 55)) * 8)
-
-    @staticmethod
-    def uid_generator():
-        return ''.join(random.choice(string.digits) for _ in range(24))
 
     def handle(self, *args, **options):
+        list_of_organisations = Organization.objects.all().values('id')
         for _ in range(100):
-            sex = random.choice(self.list_of_sex)
-            age = random.choice(self.list_of_ages)
-            uid = self.uid_generator()
-            User(uid=uid, sex=sex, age=age).save()
+            organization_id = random.choice(list_of_organisations)['id']
+            title = "title"
+            description = "description"
+            type = random.choice([EventType.PRIVATE, EventType.PUBLIC])
+            org = Organization.objects.filter(id=organization_id).first()
+            long = org.long
+            lat = org.lat
+            Event(organization=org, title=title, description=description,
+                  type=type, long=long, lat=lat).save()

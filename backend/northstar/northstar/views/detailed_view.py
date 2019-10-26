@@ -11,3 +11,12 @@ class UserDetailView(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'uid'
+
+
+class UserDetailView(generics.RetrieveAPIView):
+    """
+        Get User by UID
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = 'uid'

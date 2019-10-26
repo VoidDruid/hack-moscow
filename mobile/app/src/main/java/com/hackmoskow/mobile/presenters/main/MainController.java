@@ -38,7 +38,7 @@ public class MainController implements PositionSenderServiceCallback {
     volatile private int countOfPaused = 0;
 
     public MainController(BasicMapActivity view) {
-        this.positionSenderService = new PositionSenderService(view.getContentResolver());
+        this.positionSenderService = new PositionSenderService(view.getContentResolver(), view);
         this.executor = ThreadExecutor.getInstance();
         this.mainThread = MainThreadImpl.getInstance();
         this.view = view;

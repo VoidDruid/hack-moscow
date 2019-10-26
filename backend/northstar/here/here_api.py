@@ -27,7 +27,7 @@ class HerePlacesApi:
             result_list = []
             result_dict = result.as_dict()
             for i in range(len(result_dict['results']['items'])):
-                element = result_dict.as_dict()['results']['items'][i]
+                element = result_dict['results']['items'][i]
                 result_list.append({
                         "location": {
                             "long": element['position'][0],

@@ -3,7 +3,7 @@ from django.db import models
 # from .validators import
 from .categories import categories_json
 
-
+'''
 class CategoryChoices:
     data = {}
 
@@ -17,7 +17,7 @@ class CategoryChoices:
 
     def to_list(self):
         return [choice[1] for choice in self.CHOICES]
-
+'''
 class SexChoices:
     MALE = 'M'
     FEMALE = 'F'

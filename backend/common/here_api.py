@@ -1,6 +1,36 @@
 import traceback
+
 import herepy
+import requests
+
 from conf.settings import HERE_APP_CODE, HERE_APP_ID
+
+
+class HereWrapper:
+    def __init__(self, app_id=HERE_APP_ID, app_code=HERE_APP_CODE):
+        self.default_params = {
+            'app_id': app_id,
+            'app_code': app_code,
+        }
+
+    @staticmethod
+    def make_at(location: dict) -> str:
+        return '{},{}'.format(location['lat'], location['long'])
+
+    def search(self, location: dict, query: str):
+        request_params = {
+            **self.default_params,
+            'at': self.make_at(location),
+            #'q': query,
+        }
+        result = requests.get(
+            'http://places.cit.api.here.com/places/v1/discover/here',
+            params=request_params
+        )
+        if not result.ok:
+            return None
+        return result.json()['results']['items']
+
 
 
 class HerePlacesApi:
@@ -43,4 +73,5 @@ class HerePlacesApi:
 
 
 HERE = HerePlacesApi()
+here = HereWrapper()
 # print(her.get_place_by_location({'long':37.7905, 'lat':-122.4107}, "restaurant"))

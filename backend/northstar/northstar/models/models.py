@@ -71,3 +71,8 @@ class UserCategory(models.Model):
     category = models.CharField(max_length=100, null=False, choices=CategoryChoices.CHOICES)
     points = models.IntegerField(default=0)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class PlacesStatistics(models.Model):
+    created_at = models.DateTimeField(auto_now=True)
+    data = pg.JSONField()

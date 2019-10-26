@@ -40,7 +40,15 @@ def process_value(key, value):
     try:
         location = CollectorLocation(**json.loads(value))
 
-        redis_cities.lpush(location.city, value)
+        counter = redis_cities.hget(location.city, location.title)
+        if counter is None:
+            counter = 1
+        else:
+            counter = int(counter) + 1
+        redis_cities.hset(location.city, location.title, counter)
+
+        redis_cities.hset(location.city, location.title+'|||lat', location.lat)
+        redis_cities.hset(location.city, location.title + '|||long', location.long)
 
         user_query = User.objects.filter(uid=key)
         if not user_query.exists():

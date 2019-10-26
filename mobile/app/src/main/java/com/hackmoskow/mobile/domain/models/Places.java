@@ -15,12 +15,6 @@ public class Places {
         this.distance = distance;
     }
 
-    public void changeCoordinate() {
-        double t = location.getLat();
-        location.setLat(location.getLongitude());
-        location.setLongitude(t);
-    }
-
     public GeoCoordinate getCoordinate() {
         return new GeoCoordinate(location.lat, location.longitude);
     }
@@ -52,14 +46,6 @@ public class Places {
 
         public double getLat() {
             return lat;
-        }
-
-        public void setLongitude(double longitude) {
-            this.longitude = longitude;
-        }
-
-        public void setLat(double lat) {
-            this.lat = lat;
         }
     }
 }

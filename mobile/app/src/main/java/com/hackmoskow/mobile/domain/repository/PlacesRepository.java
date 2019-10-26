@@ -35,7 +35,38 @@ public class PlacesRepository {
     public List<Places> getPlaces(double latitude, double longitude) {
         try {
             URL urlForGetRequest = new URL("http://spacehub.su/api/users/" + getUniqId() + "/search?" +
-                    "lat=" + longitude + "&long=" + latitude);
+                    "lat=" + latitude + "&long=" + longitude);
+            String readLine;
+            HttpURLConnection connection = (HttpURLConnection) urlForGetRequest.openConnection();
+            connection.setRequestMethod("GET");
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(connection.getInputStream()));
+                StringBuffer response = new StringBuffer();
+                while ((readLine = in.readLine()) != null) {
+                    response.append(readLine);
+                }
+                in.close();
+                // print result
+                System.out.println("JSON String Result " + response.toString());
+                generatePlacesFromJson(response.toString());
+            } else {
+                System.out.println("GET NOT WORKED");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return places;
+    }
+
+    public List<Places> getPlaces(double latitude, double longitude, String categories) {
+        try {
+            URL urlForGetRequest = new URL("http://spacehub.su/api/users/" + getUniqId() + "/search?" +
+                    "lat=" + latitude + "&long=" + longitude + "&category=" + categories);
             String readLine;
             HttpURLConnection connection = (HttpURLConnection) urlForGetRequest.openConnection();
             connection.setRequestMethod("GET");
@@ -69,9 +100,7 @@ public class PlacesRepository {
             Gson gson = new Gson();
             JSONArray jsonArray = new JSONArray(json);
             for (int i=0; i<jsonArray.length(); i++) {
-                Places place = gson.fromJson(jsonArray.getString(i), Places.class);
-                place.changeCoordinate();
-                places.add(place);
+                places.add(gson.fromJson(jsonArray.getString(i), Places.class));
             }
         } catch (Exception e) {
             e.printStackTrace();

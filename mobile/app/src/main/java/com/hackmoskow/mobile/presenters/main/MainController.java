@@ -2,8 +2,11 @@ package com.hackmoskow.mobile.presenters.main;
 
 import com.hackmoskow.mobile.domain.executor.Executor;
 import com.hackmoskow.mobile.domain.executor.ThreadExecutor;
+import com.hackmoskow.mobile.domain.models.Event;
 import com.hackmoskow.mobile.domain.models.Places;
 import com.hackmoskow.mobile.domain.models.UserData;
+import com.hackmoskow.mobile.domain.repository.CategoriesRepository;
+import com.hackmoskow.mobile.domain.repository.EventsRepository;
 import com.hackmoskow.mobile.domain.repository.PlacesRepository;
 import com.hackmoskow.mobile.domain.repository.UserProfileRepository;
 import com.hackmoskow.mobile.domain.services.positionsender.PositionSenderService;
@@ -28,6 +31,10 @@ public class MainController implements PositionSenderServiceCallback {
     private UserProfileRepository userProfileRepository;
     private PlacesRepository placesRepository;
     private List<Places> places;
+    private List<Event> events;
+    private CategoriesRepository categoriesRepository;
+    private EventsRepository eventsRepository;
+
     volatile private int countOfPaused = 0;
 
     public MainController(BasicMapActivity view) {
@@ -38,7 +45,10 @@ public class MainController implements PositionSenderServiceCallback {
         this.coordinates = new ArrayList<>();
         this.userProfileRepository = new UserProfileRepository("userData.txt", view);
         this.placesRepository = new PlacesRepository(view.getContentResolver());
+        this.categoriesRepository = new CategoriesRepository();
+        this.eventsRepository = new EventsRepository();
         this.places = new ArrayList<>();
+        this.events = new ArrayList<>();
 
         checkUserData();
     }
@@ -88,9 +98,28 @@ public class MainController implements PositionSenderServiceCallback {
     public void readyForGetPlaces(GeoCoordinate coordinate) {
         executor.execute(() -> {
             List<Places> places = placesRepository.getPlaces(coordinate.getLatitude(), coordinate.getLongitude());
+            List<CategoriesRepository.Category> categories = categoriesRepository.getCategories();
+            List<Event> events = eventsRepository.getEvents();
             this.places.clear();
             this.places.addAll(places);
-            mainThread.post(() -> view.showNearestPlaces(places));
+            this.events.clear();
+            this.events.addAll(events);
+            mainThread.post(() -> {
+                view.showNearestPlaces(places);
+                view.setCategories(categories);
+                view.showEvents(events);
+            });
+        });
+    }
+
+    public void categoriesSelected(CategoriesRepository.Category categories) {
+        executor.execute(() -> {
+            List<Places> places = placesRepository.getPlaces(getCoordinate().getLatitude(), getCoordinate().getLongitude(), categories.getId());
+            this.places.clear();
+            this.places.addAll(places);
+            mainThread.post(() -> {
+                view.showNearestPlaces(places);
+            });
         });
     }
 
@@ -103,7 +132,19 @@ public class MainController implements PositionSenderServiceCallback {
                     return;
                 }
             }
+
+            eventPressed(latitude, longitude);
         });
+    }
+
+    private void eventPressed(double latitude, double longitude) {
+        for (Event event : events) {
+            if (event.getLongitude() == longitude &&
+                    event.getLat() == latitude) {
+                mainThread.post(() -> view.showEventInfo(event));
+                return;
+            }
+        }
     }
 
     public void mapPressed() {

@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,11 +20,15 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.hackmoskow.mobile.R;
+import com.hackmoskow.mobile.domain.models.Event;
 import com.hackmoskow.mobile.domain.models.Places;
+import com.hackmoskow.mobile.domain.repository.CategoriesRepository;
 import com.hackmoskow.mobile.presenters.main.MainController;
+import com.hackmoskow.mobile.ui.EventActivity;
 import com.hackmoskow.mobile.ui.settings.SettingsActivity;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.GeoPosition;
+import com.here.android.mpa.common.Image;
 import com.here.android.mpa.common.OnEngineInitListener;
 import com.here.android.mpa.common.PositioningManager;
 import com.here.android.mpa.common.ViewObject;
@@ -30,8 +37,8 @@ import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapGesture;
 import com.here.android.mpa.mapping.MapMarker;
 import com.here.android.mpa.mapping.MapObject;
-import com.here.android.mpa.mapping.MapState;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,21 +50,6 @@ import butterknife.OnClick;
 
 public class BasicMapActivity extends FragmentActivity {
 
-    @BindView(R.id.place_info_rl)
-    RelativeLayout placeInfoRelativeLayout;
-
-    @BindView(R.id.image_info)
-    ImageView imageInfo;
-
-    @BindView(R.id.category_info_tv)
-    TextView categoryInfo;
-
-    @BindView(R.id.distance_info_tv)
-    TextView distanceInfo;
-
-    @BindView(R.id.title_info_tv)
-    TextView titleInfo;
-
     private final static int REQUEST_CODE_ASK_PERMISSIONS = 1;
     private static final String[] REQUIRED_SDK_PERMISSIONS = new String[]{
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -66,8 +58,18 @@ public class BasicMapActivity extends FragmentActivity {
             Manifest.permission.INTERNET,
             Manifest.permission.ACCESS_WIFI_STATE,
             Manifest.permission.ACCESS_COARSE_LOCATION};
-
-
+    @BindView(R.id.place_info_rl)
+    RelativeLayout placeInfoRelativeLayout;
+    @BindView(R.id.image_info)
+    ImageView imageInfo;
+    @BindView(R.id.category_info_tv)
+    TextView categoryInfo;
+    @BindView(R.id.distance_info_tv)
+    TextView distanceInfo;
+    @BindView(R.id.title_info_tv)
+    TextView titleInfo;
+    @BindView(R.id.categories_btn)
+    Spinner spinner;
     private boolean paused = true;
     private Map map = null;
     private AndroidXMapFragment mapFragment = null;
@@ -75,6 +77,8 @@ public class BasicMapActivity extends FragmentActivity {
     private MainController controller;
     private GeoPosition centerPosition;
     private boolean isPlacesObtained = false;
+    private List<MapObject> markers;
+    private List<CategoriesRepository.Category> categories;
     private PositioningManager.OnPositionChangedListener positionListener = new
             PositioningManager.OnPositionChangedListener() {
 
@@ -82,8 +86,6 @@ public class BasicMapActivity extends FragmentActivity {
                                               GeoPosition position, boolean isMapMatched) {
                     if (!paused) {
                         try {
-                            map.setCenter(position.getCoordinate(),
-                                    Map.Animation.LINEAR);
                             controller.positionChanged(position.getCoordinate());
                             centerPosition = position;
 
@@ -120,6 +122,8 @@ public class BasicMapActivity extends FragmentActivity {
                     PositioningManager.LocationMethod.GPS_NETWORK);
         }
         controller = new MainController(this);
+        categories = new ArrayList<>();
+        markers = new ArrayList<>();
     }
 
     @Override
@@ -147,7 +151,7 @@ public class BasicMapActivity extends FragmentActivity {
             if (error == OnEngineInitListener.Error.NONE) {
                 map = mapFragment.getMap();
                 map.getPositionIndicator().setVisible(true);
-                map.setCenter(new GeoCoordinate(49.196261, -123.004773, 0.0),
+                map.setCenter(new GeoCoordinate(55.814297, 37.57504, 0.0),
                         Map.Animation.NONE);
                 map.setZoomLevel(map.getMaxZoomLevel());
                 setMapGestureListener();
@@ -247,12 +251,61 @@ public class BasicMapActivity extends FragmentActivity {
     }
 
     public void showNearestPlaces(List<Places> places) {
+        map.removeMapObjects(markers);
+        markers.clear();
         for (Places place : places) {
             MapMarker mapMarker = new MapMarker(place.getCoordinate());
-            mapMarker.setTitle(place.getTitle() + "\n" + place.getCategory());
+            mapMarker.setTitle("Place");
+            mapMarker.showInfoBubble();
+            map.addMapObject(mapMarker);
+            markers.add(mapMarker);
+        }
+    }
+
+    @OnClick(R.id.nav_btn)
+    public void searchMe() {
+        map.setCenter(centerPosition.getCoordinate(), Map.Animation.LINEAR);
+        map.setZoomLevel(10);
+    }
+
+    public void showEvents(List<Event> events) {
+        for (Event event : events) {
+            MapMarker mapMarker = new MapMarker(new GeoCoordinate(event.getLat(), event.getLongitude()));
+            mapMarker.setTitle("Event");
+            try {
+                Image icon = new Image();
+                icon.setImageResource(R.drawable.attention);
+                mapMarker.setIcon(icon);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             mapMarker.showInfoBubble();
             map.addMapObject(mapMarker);
         }
+    }
+
+    public void setCategories(List<CategoriesRepository.Category> categories) {
+        this.categories.clear();
+        this.categories.addAll(categories);
+
+        List<String> catForAdapter = new ArrayList<>();
+        for (CategoriesRepository.Category category : categories) {
+            catForAdapter.add(category.getTitle());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, catForAdapter);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent,
+                                       View itemSelected, int selectedItemPosition, long selectedId) {
+                controller.categoriesSelected(categories.get(selectedItemPosition));
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     public void showPlaceInfo(Places places) {
@@ -262,6 +315,13 @@ public class BasicMapActivity extends FragmentActivity {
         placeInfoRelativeLayout.setVisibility(View.VISIBLE);
     }
 
+    public void showEventInfo(Event event) {
+        Intent intent = new Intent(this, EventActivity.class);
+        intent.putExtra("title", event.getTitle());
+        intent.putExtra("description", event.getDescription());
+        startActivity(intent);
+    }
+
     private void setMapGestureListener() {
         MapGesture.OnGestureListener listener =
                 new MapGesture.OnGestureListener.OnGestureListenerAdapter() {
@@ -269,8 +329,8 @@ public class BasicMapActivity extends FragmentActivity {
                     public boolean onMapObjectsSelected(List<ViewObject> objects) {
                         for (ViewObject viewObj : objects) {
                             if (viewObj.getBaseType() == ViewObject.Type.USER_OBJECT) {
-                                if (((MapObject)viewObj).getType() == MapObject.Type.MARKER) {
-                                    MapMarker marker = (MapMarker)viewObj;
+                                if (((MapObject) viewObj).getType() == MapObject.Type.MARKER) {
+                                    MapMarker marker = (MapMarker) viewObj;
                                     controller.placePressed(marker.getCoordinate().getLatitude(), marker.getCoordinate().getLongitude());
                                 }
                             }

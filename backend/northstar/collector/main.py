@@ -1,6 +1,7 @@
 from collector import setup
-from collector.loop import Loop
-
 setup()
-loop = Loop()
-loop.run()
+
+from collector.loop import loop, collect
+
+#loop()
+collect()

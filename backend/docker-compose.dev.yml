@@ -24,6 +24,8 @@ services:
       - 8001:8000  # unused, host network
     depends_on:
       - redis
+    volumes:
+      - "./kraken:/app"
   northstar:
     network_mode: host
     restart: unless-stopped

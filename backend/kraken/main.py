@@ -1,26 +1,24 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
-
-from redis_sync import BaseRedisSyncStorage
-from redis import Redis
-from starlette.responses import JSONResponse
 import json
 
+from fastapi import FastAPI
+from redis import Redis
+from starlette.responses import JSONResponse
 
-class WriteLocation(BaseModel):
-    long: float
-    lat: float
-    duration: int
+from common.redis_sync import BaseRedisSyncStorage
+from common.models import ProvidedLocation
 
-
-redis_db = BaseRedisSyncStorage(Redis(host='localhost', port=6379, db='13'), "")
+redis_db = BaseRedisSyncStorage(Redis(host='localhost', port=6379, db='0'), '')
 app = FastAPI()
 
 
-@app.post("/users/{uid}/location")
-async def create_item(uid: str, item: WriteLocation):
+@app.post("/api/location/{uid}")
+async def create_item(uid: str, item: ProvidedLocation):
     try:
-        redis_db.lpush(uid, json.dumps(item))
-    except:
-        return JSONResponse(content={"ok": False, "Error": "Couldn't write to DB"})
+        redis_db.lpush(uid, json.dumps(item.dict()))
+    except Exception as e:
+        return JSONResponse(content={
+            "ok": False,
+            "error": "Couldn't save user location",
+            'error_detail': str(e)
+        })
     return JSONResponse(content={"ok": True})

@@ -120,3 +120,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# Service params
+COLLECT_TIMEOUT = float(os.getenv('COLLECT_TIMEOUT', 1.5))

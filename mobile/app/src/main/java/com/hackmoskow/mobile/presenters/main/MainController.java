@@ -37,7 +37,7 @@ public class MainController implements PositionSenderServiceCallback {
         this.view = view;
         this.coordinates = new ArrayList<>();
         this.userProfileRepository = new UserProfileRepository("userData.txt", view);
-        this.placesRepository = new PlacesRepository();
+        this.placesRepository = new PlacesRepository(view.getContentResolver());
         this.places = new ArrayList<>();
 
         checkUserData();
@@ -54,7 +54,6 @@ public class MainController implements PositionSenderServiceCallback {
 
     public void positionChanged(GeoCoordinate coordinate) {
         executor.execute(() -> {
-            System.out.println("HERE!");
             if (lastCoordinatesAdd == null || coordinates.size() == 0) {
                 coordinates.add(coordinate);
                 System.out.println("Add first!!!");

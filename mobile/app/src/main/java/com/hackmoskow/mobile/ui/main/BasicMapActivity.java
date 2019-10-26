@@ -80,7 +80,6 @@ public class BasicMapActivity extends FragmentActivity {
 
                 public void onPositionUpdated(PositioningManager.LocationMethod method,
                                               GeoPosition position, boolean isMapMatched) {
-                    System.out.println(paused);
                     if (!paused) {
                         try {
                             map.setCenter(position.getCoordinate(),

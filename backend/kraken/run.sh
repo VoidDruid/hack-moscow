@@ -1,1 +1,2 @@
-uvicorn main:app --reload --host='localhost' --port=8080
+#!/bin/bash
+uvicorn main:app --reload --host='localhost' --port=8001

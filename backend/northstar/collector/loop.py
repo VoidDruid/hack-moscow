@@ -1,4 +1,4 @@
-from northstar.models import User, UserCategories
+from northstar.models import User, UserCategory
 
 
 def loop():
@@ -7,3 +7,4 @@ def loop():
 
 
 def collect():
+    pass

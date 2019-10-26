@@ -61,7 +61,7 @@ class PlacesListView(generics.ListAPIView):
             return Response({'ok': False, 'error': "Provide 'category' param"})
         places_list = here.search_q({'lat': lat, 'long': long}, category)
         if places_list is not None:
-            return Response(places_list)
+            return Response(here.format_items(places_list))
         else:
             return Response({'ok': False, 'error': 'Wrong input parameters'})
 

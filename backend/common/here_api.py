@@ -22,6 +22,18 @@ class HereWrapper:
     def make_at(location: dict) -> str:
         return '{},{}'.format(location['lat'], location['long'])
 
+    @staticmethod
+    def format_items(items):
+        return [{
+            "location": {
+                "long": item['position'][1],
+                "lat": item['position'][0],
+            },
+            "distance": item['distance'],
+            "title": item['title'],
+            "category": item['category']['id']
+        } for item in items]
+
     def search_q(self, location: dict, query: str):
         return self._get(location, query, 'discover/search')
 

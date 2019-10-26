@@ -15,6 +15,11 @@ app = FastAPI()
 @app.post("/api/location/{uid}")
 async def create_item(uid: str, item: ProvidedLocation):
     here_place = here.search({'long': item.long, 'lat': item.lat})
+    if here_place is None:
+        return JSONResponse(content={
+            "ok": False,
+            "error": "Wrong parameters"
+        })
     place = {
         'long': item.long, 'lat': item.lat,
         'duration': item.duration, 'city': item.city,

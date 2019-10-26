@@ -7,7 +7,7 @@ from redis import Redis
 from conf.settings import COLLECT_TIMEOUT
 
 from common.redis_sync import BaseRedisSyncStorage
-from common.models import ProvidedLocation
+from common.models import CollectorLocation
 from northstar.models import User, UserCategory
 from common.here_api import HERE
 
@@ -36,7 +36,9 @@ def collect():
 
 def process_value(key, value):
     try:
-        location = ProvidedLocation(**json.loads(value))
+        location = CollectorLocation(**json.loads(value))
+        redis.lpush(location.city, value)
+
         user_query = User.objects.filter(uid=key)
         if not user_query.exists():
             user = User(uid=key)

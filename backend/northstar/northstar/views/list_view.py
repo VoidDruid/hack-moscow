@@ -21,6 +21,12 @@ class EventListView(generics.ListCreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
+    def get_queryset(self):
+        category = self.request.GET.get('category')
+        if category is None:
+            return super().get_queryset()
+        return self.queryset.filter(organization__category=category)
+
 
 class OrganisationsListView(generics.ListCreateAPIView):
     """
@@ -68,3 +74,12 @@ class RecommendationsListView(generics.ListAPIView):
         return Response(result)
 
 
+class EventByOrgListView(generics.ListAPIView):
+    """
+        Event by Organisation
+    """
+    serializer_class = EventSerializer
+    queryset = Event.objects.all()
+
+    def get_queryset(self):
+        return self.queryset.filter(organization=self.kwargs['id'])

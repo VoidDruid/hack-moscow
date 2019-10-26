@@ -9,7 +9,7 @@ from conf.settings import COLLECT_TIMEOUT
 from common.redis_sync import BaseRedisSyncStorage
 from common.models import ProvidedLocation
 from northstar.models import User, UserCategory
-from here.here_api import HERE
+from common.here_api import HERE
 
 log = logging.getLogger(__name__)
 redis = BaseRedisSyncStorage(Redis(host='localhost', port=6379, db='0'), '')

@@ -7,12 +7,12 @@ import {observable} from "mobx";
 @observer
 class MapsWrapper extends React.Component {
     mapConfig = {
-        name: 'Seattle, WA',
-        coordinates: [47.605779, -122.315744],
+        name: 'Moscow, RF',
+        coordinates: [55.751244, 37.618423],
         polygon: []
     }
     @observable mapOptions= {
-        zoom: 5,
+        zoom: 10,
         type: 'distance',
         range: 300000,
         mode: 'car',

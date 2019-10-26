@@ -1,8 +1,9 @@
 import React from "react";
-import {Redirect, Link, Switch, Route, BrowserRouter} from "react-router-dom";
+import {Redirect, Link, Switch, Route, BrowserRouter, NavLink} from "react-router-dom";
 import './style.css'
 import {CheckboxIcon, HomeIcon, MapIcon, SettingsIcon} from "./shared/icons";
 import MapsWrapper from "./shared/MapWrapper";
+import EventsPage from "./pages/EventsPage";
 
 
 const routesList = [
@@ -18,7 +19,7 @@ const routesList = [
         visible: true,
         icon: <CheckboxIcon />,
         label: 'Set event',
-        component: () => <div>map</div>
+        component: () => <EventsPage />
     },
     {
         path: '/statistics',
@@ -58,9 +59,9 @@ export const Root = () => <div className="root-container">
                 route => route.visible && <div className='root-menu-item'>
                     {route.icon && <span className='root-menu-item-icon'>{route.icon}</span>}
                     <div className='root-menu-item-link'>
-                        <Link key={1 + route.label} to={route.path}>
+                        <NavLink key={1 + route.label} to={route.path} activeClassName='active'>
                             {route.label}
-                        </Link>
+                        </NavLink>
                     </div>
                 </div>
             )}
@@ -74,7 +75,6 @@ export const Root = () => <div className="root-container">
             {
                 routesList.map(
                     route => <Route key={2 + route.label} path={route.path} exact component={route.component}/>
-
                 )
             }
         </Switch>

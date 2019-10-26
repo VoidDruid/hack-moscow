@@ -22,14 +22,21 @@ class HereWrapper:
     def make_at(location: dict) -> str:
         return '{},{}'.format(location['lat'], location['long'])
 
+    def search_q(self, location: dict, query: str):
+        return self._get(location, query, 'discover/search')
+
     def search(self, location: dict):
+        return self._get(location)
+
+    def _get(self, location: dict, query: str = None, endpoint: str = 'discover/here'):
         request_params = {
             **self.default_params,
             'at': self.make_at(location),
-            #'q': query,
         }
+        if query:
+            request_params['q'] = query
         result = requests.get(
-            'http://places.cit.api.here.com/places/v1/discover/here',
+            f'http://places.cit.api.here.com/places/v1/{endpoint}',
             params=request_params
         )
         if not result.ok:

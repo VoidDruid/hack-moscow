@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from northstar.models import *
 from northstar.serializers import *
 from northstar.models.categories import categories_json
-from common.here_api import HERE
+from common.here_api import here
 
 
 class UserListView(generics.ListCreateAPIView):
@@ -56,11 +56,14 @@ class PlacesListView(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
         lat = request.GET.get('lat')
         long = request.GET.get('long')
-        places_list = HERE.get_place_by_location({'lat': lat, 'long': long})
+        category = request.GET.get('category')
+        if not category:
+            return Response({'ok': False, 'error': "Provide 'category' param"})
+        places_list = here.search_q({'lat': lat, 'long': long}, category)
         if places_list is not None:
             return Response(places_list)
         else:
-            return Response({"ok": False, "Error": "Wrong input parameters"})
+            return Response({'ok': False, 'error': 'Wrong input parameters'})
 
 
 class RecommendationsListView(generics.ListAPIView):

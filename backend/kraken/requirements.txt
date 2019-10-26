@@ -2,3 +2,5 @@ fastapi==0.42.0
 pydantic==0.32.2
 redis==3.3.11
 uvicorn==0.9.1
+herepy==0.6.3.3
+requests==2.22.0

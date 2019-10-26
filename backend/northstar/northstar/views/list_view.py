@@ -56,3 +56,15 @@ class PlacesListView(generics.ListAPIView):
         else:
             return Response({"ok": False, "Error": "Wrong input parameters"})
 
+
+class RecommendationsListView(generics.ListAPIView):
+    lookup_field = 'uid'
+    serializer_class = None
+
+    def list(self, request, *args, **kwargs):
+        user = User.objects.filter(uid=kwargs['uid']).first()
+
+        result = UserCategory.objects.filter(user=user).values('category').order_by('-points')[0:3]
+        return Response(result)
+
+

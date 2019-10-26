@@ -22,7 +22,7 @@ class HereWrapper:
     def make_at(location: dict) -> str:
         return '{},{}'.format(location['lat'], location['long'])
 
-    def search(self, location: dict, query: str):
+    def search(self, location: dict):
         request_params = {
             **self.default_params,
             'at': self.make_at(location),

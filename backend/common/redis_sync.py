@@ -26,6 +26,12 @@ class BaseRedisSyncStorage(object):
         self.key_prefix = key_prefix
         self._ttl = ttl
 
+    def hset(self, name, key, value):
+        return self.conn.hset(name=name, key=key, value=value)
+
+    def hget(self, name, key):
+        return self.conn.hget(name, key)
+
     def lpush(self, key, values):
         return self.conn.lpush(full_cache_key(self.key_prefix, key), values)
 

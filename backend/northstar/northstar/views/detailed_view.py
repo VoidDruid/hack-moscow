@@ -1,7 +1,7 @@
 from rest_framework import generics
 
 from northstar.serializers import UserSerializer, EventSerializer
-from northstar.models import User
+from northstar.models import User, Event
 
 
 class UserDetailView(generics.RetrieveAPIView):
@@ -13,11 +13,11 @@ class UserDetailView(generics.RetrieveAPIView):
     lookup_field = 'uid'
 
 
-class EventDetailView(generics.RetrieveAPIView):
+class EventDetailView(generics.RetrieveDestroyAPIView):
     """
-        Get User by UID
+        Get Event by ID
     """
-    queryset = User.objects.all()
+    queryset = Event.objects.all()
     serializer_class = EventSerializer
     lookup_field = 'id'
 

@@ -1,30 +1,29 @@
 import React from "react";
 import {Redirect, Link, Switch, Route, BrowserRouter} from "react-router-dom";
 import './style.css'
-import {HMap} from "./shared/HMap/HMap";
+import {CheckboxIcon, HomeIcon, MapIcon, SettingsIcon} from "./shared/icons";
+import MapsWrapper from "./shared/MapWrapper";
+
 
 const routesList = [
     {
         path: '/',
         visible: true,
+        icon: <HomeIcon />,
         label: 'main',
         component: () => <div>main</div>
     },
     {
-        path: '/settings',
-        visible: true,
-        label: 'settings',
-        component: () => <div>settings</div>
-    },
-    {
         path: '/map',
         visible: true,
-        label: 'map',
+        icon: <CheckboxIcon />,
+        label: 'Set event',
         component: () => <div>map</div>
     },
     {
         path: '/statistics',
         visible: true,
+        icon: <MapIcon />,
         label: 'statistics',
         component: () => <div>statistics</div>
     },
@@ -33,7 +32,16 @@ const routesList = [
         component: () => <div>login</div>
     },
     {
+        path: '/settings',
+        visible: true,
+        icon: <SettingsIcon />,
+        label: 'settings',
+        component: () => <div>settings</div>
+    },
+    {
         path: '/logout',
+        visible:true,
+        label: 'logout',
         component: () => {
             alert('logout');
             return <Redirect to={'/login'} />
@@ -44,18 +52,21 @@ const routesList = [
 export const Root = () => <div className="root-container">
     <BrowserRouter>
         <div className="root-menu">
+            <div className='root-menu-item'>North Star</div>
             {routesList.map(
-                route => route.visible && <Link key={1 + route.label} to={route.path}>
-                    {route.label}
-                    <br/>
-                </Link>
+
+                route => route.visible && <div className='root-menu-item'>
+                    {route.icon && <span className='root-menu-item-icon'>{route.icon}</span>}
+                    <div className='root-menu-item-link'>
+                        <Link key={1 + route.label} to={route.path}>
+                            {route.label}
+                        </Link>
+                    </div>
+                </div>
             )}
         </div>
         <div className='root-content'>
-            <HMap app_id={process.env.APP_ID}
-                  app_code={process.env.APP_CODE}
-                  zoom={10} lat={55.751244}
-                  lng={ 37.618423}
+            <MapsWrapper
             />
         </div>
         <div className='root-tool'>

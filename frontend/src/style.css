@@ -2,27 +2,66 @@ body {
     padding: 0;
     margin: 0;
 }
+a {
+    text-decoration: none;
+    text-underline: none;
+    color: inherit;
+}
 .root-container {
+    position: relative;
     display: grid;
     grid-template-areas: 'menu content content content tool tool';
     height: 100vh;
 }
 .root-menu {
-grid-area: menu;
-border: 1px dashed darkred;
+    grid-area: menu;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    background-color: #323a51;
+    color: #babcd1;
+}
+.root-menu-item:first-child {
+    margin-bottom: auto;
+    padding: 10px 0 0;
 }
 
+.root-menu-item:last-child {
+    margin-top: auto;
+}
+.root-menu-item {
+    position: relative;
+    padding-left: 60px;
+    padding-top: 10px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    min-width: 80px;
+}
+.root-menu-item-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.root-menu-item:hover {
+    filter: drop-shadow(1px 1px 3px white);
+}
 .root-content {
     grid-area: content;
-    border: 1px dashed aquamarine;
 }
 .root-tool {
     grid-area: tool;
-    border: 1px dashed blueviolet;
-    padding: 15px;
+    padding: 15px auto 15px 15px;
+    background-color: #f7f7ff;
+}
+.root-tool > * {
+    max-width: 100px;
+    min-width: 100px;
+    /*margin: 0 auto;*/
 }
 
-#here-map {
+.map {
     width: 100%;
     height: 100vh;
     background: grey;

@@ -2,28 +2,151 @@ body {
     padding: 0;
     margin: 0;
 }
+a {
+    text-decoration: none;
+    text-underline: none;
+    color: inherit;
+}
 .root-container {
+    position: relative;
     display: grid;
     grid-template-areas: 'menu content content content tool tool';
     height: 100vh;
 }
 .root-menu {
-grid-area: menu;
-border: 1px dashed darkred;
+    grid-area: menu;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    background-color: #323a51;
+    color: #babcd1;
+}
+.root-menu-item:first-child {
+    margin-bottom: auto;
+    padding: 10px 0 0;
 }
 
+.root-menu-item:last-child {
+    margin-top: auto;
+}
+.root-menu-item {
+    position: relative;
+    padding-left: 60px;
+    padding-top: 10px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    min-width: 80px;
+}
+.root-menu-item-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.root-menu-item:hover {
+    filter: drop-shadow(1px 1px 3px white);
+}
+.root-menu-item-link .active {
+    filter: hue-rotate(180deg);
+}
 .root-content {
     grid-area: content;
-    border: 1px dashed aquamarine;
 }
 .root-tool {
     grid-area: tool;
-    border: 1px dashed blueviolet;
-    padding: 15px;
+    padding: 15px auto 15px 15px;
+    background-color: #f7f7ff;
+    max-height: 700px;
+    overflow-y: scroll;
+}
+.root-tool > * {
+    max-width: 100px;
+    min-width: 100px;
+    /*margin: 0 auto;*/
 }
 
-#here-map {
+.map {
     width: 100%;
     height: 100vh;
     background: grey;
+}
+
+
+
+/**********************************************************************************/
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+      "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+      monospace;
+  }
+  
+
+  .container-main{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    height: 100vh;
+    background-image: url('https://360.here.com/hs-fs/hubfs/Imported_Blog_Media/washington-transit-map58.jpg?width=1024&name=washington-transit-map58.jpg');
+}
+
+.navbar {
+    display: grid;
+    grid-template-rows: repeat(4,1fr);
+    padding-top: 30%;
+    margin: 0 10%;
+    text-align: center;
+    grid-row-gap: 20%;
+    font-size: 1.7em;
+}
+
+.navbar a:first-child{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 1.7em;
+}
+.navbar a{
+    color: white;
+    font: bold Helvetica, Arial, Sans-Serif;
+    text-shadow: 1px 1px #0f9145, 2px 2px #0f9145, 3px 3px #0f9145;
+}
+
+.navbar a:hover{
+    position: relative; top: -3px; left: -3px; 
+    text-shadow: 1px 1px #0f9145, 2px 2px #0f9145, 3px 3px #0f9145, 4px 4px #0f9145, 5px 5px #0f9145, 6px 6px #0f9145;      
+}
+
+.navbar a:active{
+    text-decoration: underline;
+    text-shadow: unset;
+}
+
+.container-left-menu{
+    /*height: 80%;*/
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+    background-color: #323a51;
+}
+
+.container-center{
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+.image-box{
+    background:linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://cdn2.hubspot.net/hubfs/2174253/here-maps-ionic-framework.gif');
+    /*filter: brightness(60%);*/
+
+    height: 42vh;
+    border-radius: 7px;
+    padding-top: 150px;
+    margin-top: 20%;
+    font-size: 2em;
+    color: white;
 }

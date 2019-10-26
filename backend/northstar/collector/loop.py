@@ -18,7 +18,10 @@ USER_LOCATIONS_PER_SCAN = 5
 
 def loop():
     while True:
-        collect()
+        try:
+            collect()
+        except Exception:
+            log.exception('Caught exception in main collector thread!')
         time.sleep(COLLECT_TIMEOUT)
 
 

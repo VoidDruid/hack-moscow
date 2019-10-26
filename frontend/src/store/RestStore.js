@@ -12,12 +12,14 @@ class RestStore {
 
     @action
     getOrganisations(){
+        if (this._organisationsListTimer)
+            return
         const handler = async () => {
             const resp = await axios.get(ENDPOINTS.ORGANISATIONS);
             console.log('organisations response',resp);
             this._organisationsList = resp.data || [];
-        }
-        handler()
+        };
+        handler();
         this._organisationsListTimer = setInterval(
             handler,
             30000
@@ -34,6 +36,9 @@ class RestStore {
     }
     @action
     getOrganisationsEvents() {
+        if (this._organisationsEventsTimer){
+            return
+        }
         const handler = async () => {
             const resp = await axios.get(ENDPOINTS.EVENTS)
             console.log('events response', resp);
@@ -56,6 +61,11 @@ class RestStore {
     }
     cancelScheduleOrganisationsEventsRequests() {
         clearInterval(this._organisationsEventsTimer)
+    }
+    @computed get addressPoints(){
+        return this.organisationsEvents.map(
+            ({lat, long}) => ({lat,long})
+        )
     }
 }
 export const rest = new RestStore();

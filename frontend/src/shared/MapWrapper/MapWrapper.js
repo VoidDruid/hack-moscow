@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapContainer } from './MapContainer/MapContainer';
+import  MapContainer  from './MapContainer/MapContainer';
 import { hereIsolineUrl, maxIsolineRangeLookup } from './here';
 import {observer} from 'mobx-react'
 import {observable} from "mobx";
@@ -37,7 +37,6 @@ class MapsWrapper extends React.Component {
                 polygon={this.mapConfig.polygon}
                 style={this.mapOptions.style}
             />
-                <button onClick={() => this.mapOptions.zoom++}>click! </button>
             </div>
         );
     }

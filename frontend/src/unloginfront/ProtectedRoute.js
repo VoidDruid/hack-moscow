@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import Auth from "./Auth";
+import {historyStore} from "../store/HistoryStore";
 
 export const ProtectedRoute = ({
   component: Component,
@@ -10,7 +11,7 @@ export const ProtectedRoute = ({
     <Route
       {...rest}
       render={props => {
-        if (Auth.isAuthenticated()) {
+        if (historyStore.isAuth) {
           return <Component {...props} />;
         } else {
           return (

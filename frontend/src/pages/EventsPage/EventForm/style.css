@@ -1,0 +1,25 @@
+.event-form {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
+    background-color: #323a51;
+    filter: hue-rotate(15deg);
+    align-items: flex-start;
+    color: #f7f7ff;
+}
+
+.event-form > * {
+    margin-top: 50px;
+    margin-left: 20px;
+
+
+}
+.event-form > *:not(button) {
+    width: 80%;
+}
+.event-form > *:nth-child(2) {
+    margin-top: 0;
+}
+.event-form > label > *:not(button) {
+    width: 100%
+}

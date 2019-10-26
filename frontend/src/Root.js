@@ -2,8 +2,8 @@ import React from "react";
 import {Redirect, Link, Switch, Route, BrowserRouter, NavLink} from "react-router-dom";
 import './style.css'
 import {CheckboxIcon, HomeIcon, MapIcon, SettingsIcon} from "./shared/icons";
-import MapsWrapper from "./shared/MapWrapper";
-import EventsPage from "./pages/EventsPage";
+import MapsWrapper from "./shared/MapWrapper/MapWrapper";
+import EventsPage from "./pages/EventsPage/EventPage";
 import Auth from './unloginfront/Auth'
 import { historyStore } from "./store/HistoryStore";
 
@@ -13,34 +13,34 @@ const routesList = [
         path: '/',
         visible: true,
         icon: <HomeIcon />,
-        label: 'main',
+        label: 'Main',
         component: () => <div>main</div>
     },
     {
         path: '/map',
         visible: true,
         icon: <CheckboxIcon />,
-        label: 'Set event',
+        label: 'Events',
         component: () => <EventsPage />
     },
     {
         path: '/statistics',
         visible: true,
         icon: <MapIcon />,
-        label: 'statistics',
+        label: 'Statistics',
         component: () => <div>statistics</div>
     },
     {
         path: '/settings',
         visible: true,
         icon: <SettingsIcon />,
-        label: 'settings',
+        label: 'Settings',
         component: () => <div>settings</div>
     },
     {
         path: '/logout',
         visible:true,
-        label: 'logout',
+        label: 'Logout',
         component: () => {
             historyStore.logOut()
             return <></>

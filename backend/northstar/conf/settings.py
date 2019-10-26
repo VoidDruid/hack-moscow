@@ -123,3 +123,20 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Service params
 COLLECT_TIMEOUT = float(os.getenv('COLLECT_TIMEOUT', 1.5))
+
+
+# Celery config
+CELERY_BROKER_URL = 'redis://localhost:6379/15'
+CELERY_BROKER_TRANSPORT_OPTIONS = {"visibility_timeout": 3600}
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/14'
+
+CELERY_BEAT_SCHEDULE = {
+    "export_stats": {
+        "task": "northstar.tasks.export_stats",
+        "schedule": 15,
+    },
+}
+
+CELERY_IMPORTS = [
+    "northstar.tasks"
+]

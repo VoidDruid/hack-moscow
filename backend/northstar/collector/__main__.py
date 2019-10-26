@@ -1,9 +1,9 @@
 from collector import setup
 setup()
 
-from collector.loop import loop, collect, process_value, redis
+from collector.loop import loop
 
 print('Starting collector...')
 
-#loop()
-collect()
+loop()
+#collect()

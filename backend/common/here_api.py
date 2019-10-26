@@ -38,7 +38,10 @@ class HereWrapper:
         return self._get(location, query, 'discover/search')
 
     def search(self, location: dict):
-        return self._get(location)[0]
+        result = self._get(location)
+        if result:
+            return result[0]
+        return None
 
     def _get(self, location: dict, query: str = None, endpoint: str = 'discover/here'):
         request_params = {

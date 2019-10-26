@@ -27,10 +27,10 @@ class BaseRedisSyncStorage(object):
         self._ttl = ttl
 
     def hset(self, name, key, value):
-        return self.conn.hset(name=name, key=key, value=value)
+        return self.conn.hset(name=full_cache_key(self.key_prefix, name), key=key, value=value)
 
     def hget(self, name, key):
-        return self.conn.hget(name, key)
+        return self.conn.hget(full_cache_key(self.key_prefix, name), key)
 
     def lpush(self, key, values):
         return self.conn.lpush(full_cache_key(self.key_prefix, key), values)
@@ -80,3 +80,6 @@ class BaseRedisSyncStorage(object):
 
     def __iter__(self):
         yield from map(lambda key: strip_cache_key(key.decode('utf-8')), self.conn.scan_iter())
+
+    def hkeys(self, name):
+        return self.conn.hkeys(full_cache_key(self.key_prefix, name))

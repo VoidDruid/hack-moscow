@@ -11,29 +11,37 @@ from common.models import CollectorLocation
 from northstar.models import User, UserCategory
 
 log = logging.getLogger(__name__)
+
 redis = BaseRedisSyncStorage(Redis(host='localhost', port=6379, db='0'), '')
 redis_cities = BaseRedisSyncStorage(Redis(host='localhost', port=6379, db='1'), '')
+
+CITY_DATA_SEP = '|||'
 USER_LOCATIONS_PER_SCAN = 5
 
 
 def loop():
     while True:
         try:
-            log.debug('Running collection')
-            collect()
-        except Exception:
+            print('Running collection')
+            collect(redis, process_user_data)
+        except Exception as e:
+            print(e)
             log.exception('Caught exception in main collector thread!')
         time.sleep(COLLECT_TIMEOUT)
 
 
-def collect():
+def collect(redis_connector, processor):
     for key in redis:
-        for _ in range(USER_LOCATIONS_PER_SCAN):
-            log.info(f'Processing key {key}')
-            value = redis.rpop(key)
-            if not value:
-                break
-            process_value(key, value)
+        processor(key, redis_connector)
+
+
+def process_user_data(key, redis_connector):
+    for _ in range(USER_LOCATIONS_PER_SCAN):
+        print(f'Processing key {key}')
+        value = redis_connector.rpop(key)
+        if not value:
+            break
+        process_value(key, value)
 
 
 def process_value(key, value):
@@ -46,9 +54,8 @@ def process_value(key, value):
         else:
             counter = int(counter) + 1
         redis_cities.hset(location.city, location.title, counter)
-
-        redis_cities.hset(location.city, location.title+'|||lat', location.lat)
-        redis_cities.hset(location.city, location.title + '|||long', location.long)
+        redis_cities.hset(location.city, f'{location.title}{CITY_DATA_SEP}lat', location.lat)
+        redis_cities.hset(location.city, f'{location.title}{CITY_DATA_SEP}long', location.long)
 
         user_query = User.objects.filter(uid=key)
         if not user_query.exists():
@@ -68,5 +75,6 @@ def process_value(key, value):
 
         user_category.points += 1
         user_category.save()
-    except Exception:
+    except Exception as e:
+        print(e)
         log.exception(f'Caught exception while collecting data for user {key}')

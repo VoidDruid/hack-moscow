@@ -44,6 +44,21 @@ services:
     depends_on:
       - postgres
       - redis
+  celery:
+    network_mode: host
+    restart: unless-stopped
+    entrypoint: "tail -f /dev/null"
+    environment:
+      - RUN_LEVEL=dev
+    build:
+      dockerfile: deploy/Dockerfile.celery
+      context: northstar
+    volumes:
+      - "./northstar:/code"
+      - "./common:/common"
+    depends_on:
+      - postgres
+      - redis
   postgres:
     image: postgres
     ports:

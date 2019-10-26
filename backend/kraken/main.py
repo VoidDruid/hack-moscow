@@ -13,14 +13,14 @@ class WriteLocation(BaseModel):
     duration: int
 
 
-redis_db = BaseRedisSyncStorage(Redis(host='localhost', port=6379, db='13'), "")
+redis_db = BaseRedisSyncStorage(Redis(host='localhost', port=6379, db='0'), '')
 app = FastAPI()
 
 
-@app.post("/users/{uid}/location")
+@app.post("/api/location/{uid}")
 async def create_item(uid: str, item: WriteLocation):
     try:
-        redis_db.lpush(uid, json.dumps(item))
-    except:
-        return JSONResponse(content={"ok": False, "Error":"Couldn't write to DB"})
+        redis_db.lpush(uid, json.dumps(item.dict()))
+    except Exception as e:
+        return JSONResponse(content={"ok": False, "error":"Couldn't write to DB", 'error_detail': str(e)})
     return JSONResponse(content={"ok": True})

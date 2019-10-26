@@ -1,0 +1,54 @@
+root: /api
+
+User
+1) /location/<user> - POST сюда с координатами юзера
+2) /users/<user>/search?category=A&lat=B&long=C - GET запрос ближайших мест по категории
+3) /users/<user>/api/recommend - GET запрос, возвращает места которые юзеру могут быть интересны на основе его перемещений и других запросов
+4) /users/<user> - GET вернет инфу по юзеру
+5) /users - GET запрос вернет всех юзеров
+
+Organisation
+1) /org/event - POST создает событие организации (например, распродажу)
+2) /org/event - GET получает все события организации
+3) /org/event/<event_id> - DELETE удаляет событие с event_id
+4) /org/event/<event_id> - GET получает подробную инфу по ивенту
+5) /org/heat/places - GET вернет популярные места
+6) /org/heat/routes - GET вернет популярные маршруты перемещений
+
+Government
+1) /gov/event - Создает государственный ивент (придумаем потом)
+
+Структуры данных:
+location: {
+  'long': float,
+  'lat': float,
+  'address': str (optional),
+}
+
+event: {
+  'id': int,
+  'type': 'public' | 'private',
+  'title': str,
+  'desc': str,  # описание
+  'location': location
+}
+
+user: {
+  'uid': str,
+  'sex': 'male' | 'female' | 'nonbinary',
+  'age': int,
+}
+
+place: {  # места для рекомендаций юзеру
+  'location': location,
+  'title': str,
+  'category': str,
+}
+
+heat_place(place): {  # популярное место, для api организаций. Возвращается список из них
+  'volume': int  # рейтинг популярности
+}
+
+heat_route: {  # популярные маршруты
+  # придумаем потом
+}

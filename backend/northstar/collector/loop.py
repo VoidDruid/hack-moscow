@@ -13,6 +13,7 @@ from common.here_api import HERE
 
 log = logging.getLogger(__name__)
 redis = BaseRedisSyncStorage(Redis(host='localhost', port=6379, db='0'), '')
+redis_cities = BaseRedisSyncStorage(Redis(host='localhost', port=6379, db='1'), '')
 USER_LOCATIONS_PER_SCAN = 5
 
 
@@ -37,7 +38,7 @@ def collect():
 def process_value(key, value):
     try:
         location = CollectorLocation(**json.loads(value))
-        redis.lpush(location.city, value)
+        redis_cities.lpush(location.city, value)
 
         user_query = User.objects.filter(uid=key)
         if not user_query.exists():

@@ -1,6 +1,7 @@
 package com.hackmoskow.mobile.ui.main;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -37,6 +39,11 @@ import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapGesture;
 import com.here.android.mpa.mapping.MapMarker;
 import com.here.android.mpa.mapping.MapObject;
+import com.here.android.mpa.mapping.MapRoute;
+import com.here.android.mpa.routing.RouteManager;
+import com.here.android.mpa.routing.RouteOptions;
+import com.here.android.mpa.routing.RoutePlan;
+import com.here.android.mpa.routing.RouteResult;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -78,7 +85,9 @@ public class BasicMapActivity extends FragmentActivity {
     private GeoPosition centerPosition;
     private boolean isPlacesObtained = false;
     private List<MapObject> markers;
+    private GeoCoordinate lastEventCoordinate;
     private List<CategoriesRepository.Category> categories;
+    private MapRoute mapRoute;
     private PositioningManager.OnPositionChangedListener positionListener = new
             PositioningManager.OnPositionChangedListener() {
 
@@ -124,6 +133,8 @@ public class BasicMapActivity extends FragmentActivity {
         controller = new MainController(this);
         categories = new ArrayList<>();
         markers = new ArrayList<>();
+        lastEventCoordinate = new GeoCoordinate(0, 0);
+        mapRoute = new MapRoute();
     }
 
     @Override
@@ -154,6 +165,7 @@ public class BasicMapActivity extends FragmentActivity {
                 map.setCenter(new GeoCoordinate(55.814297, 37.57504, 0.0),
                         Map.Animation.NONE);
                 map.setZoomLevel(map.getMaxZoomLevel());
+
                 setMapGestureListener();
             } else {
                 System.out.println("ERROR: Cannot initialize Map Fragment");
@@ -319,7 +331,12 @@ public class BasicMapActivity extends FragmentActivity {
         Intent intent = new Intent(this, EventActivity.class);
         intent.putExtra("title", event.getTitle());
         intent.putExtra("description", event.getDescription());
-        startActivity(intent);
+        intent.putExtra("latitude", event.getLat());
+        intent.putExtra("longitude", event.getLongitude());
+
+        lastEventCoordinate = new GeoCoordinate(event.getLat(), event.getLongitude());
+
+        startActivityForResult(intent, 100);
     }
 
     private void setMapGestureListener() {
@@ -332,10 +349,10 @@ public class BasicMapActivity extends FragmentActivity {
                                 if (((MapObject) viewObj).getType() == MapObject.Type.MARKER) {
                                     MapMarker marker = (MapMarker) viewObj;
                                     controller.placePressed(marker.getCoordinate().getLatitude(), marker.getCoordinate().getLongitude());
+                                    return true;
                                 }
                             }
                         }
-                        // return false to allow the map to handle this callback also
                         return false;
                     }
                 };
@@ -346,6 +363,60 @@ public class BasicMapActivity extends FragmentActivity {
         this.paused = paused;
         if (!paused && centerPosition != null) {
             map.setCenter(centerPosition.getCoordinate(), Map.Animation.LINEAR);
+        }
+    }
+
+    public void showRout(GeoCoordinate from, GeoCoordinate to) {
+        map.removeMapObject((MapObject)mapRoute);
+        RouteManager rm = new RouteManager();
+
+        RoutePlan routePlan = new RoutePlan();
+        routePlan.addWaypoint(from);
+        routePlan.addWaypoint(to);
+
+        RouteOptions routeOptions = new RouteOptions();
+        routeOptions.setTransportMode(RouteOptions.TransportMode.CAR);
+        routeOptions.setRouteType(RouteOptions.Type.FASTEST);
+
+        routePlan.setRouteOptions(routeOptions);
+
+        rm.calculateRoute(routePlan, new RouteListener());
+    }
+
+    private class RouteListener implements RouteManager.Listener {
+
+        // Method defined in Listener
+        public void onProgress(int percentage) {
+            // Display a message indicating calculation progress
+        }
+
+        // Method defined in Listener
+        public void onCalculateRouteFinished(RouteManager.Error error, List<RouteResult> routeResult) {
+            // If the route was calculated successfully
+            if (error == RouteManager.Error.NONE) {
+                // Render the route on the map
+                mapRoute = new MapRoute(routeResult.get(0).getRoute());
+                map.addMapObject(mapRoute);
+            }
+            else {
+                // Display a message indicating route calculation failure
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (100) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    boolean isRoute = data.getBooleanExtra("route", false);
+                    if (isRoute) {
+                        showRout(centerPosition.getCoordinate(), lastEventCoordinate);
+                    }
+                }
+                break;
+            }
         }
     }
 }

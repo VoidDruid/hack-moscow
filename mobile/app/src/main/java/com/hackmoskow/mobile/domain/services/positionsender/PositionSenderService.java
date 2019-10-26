@@ -30,7 +30,7 @@ public class PositionSenderService {
         try {
 
             Geocoder gcd = new Geocoder(context, Locale.getDefault());
-            List<Address> addresses = gcd.getFromLocation(58.599352, 49.622355, 1);
+            List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
             if (addresses.size() > 0) {
                 System.out.println(addresses.get(0).getLocality());
             }

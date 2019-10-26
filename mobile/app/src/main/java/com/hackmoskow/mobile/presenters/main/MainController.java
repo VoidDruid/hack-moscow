@@ -132,7 +132,6 @@ public class MainController implements PositionSenderServiceCallback {
                     return;
                 }
             }
-
             eventPressed(latitude, longitude);
         });
     }

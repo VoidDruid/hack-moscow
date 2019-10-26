@@ -7,19 +7,31 @@ class HerePlacesApi:
     def __init__(self):
         self.__places_api = herepy.PlacesApi(HERE_APP_ID, HERE_APP_CODE)
 
+    def _place_at(self, location):
+        return self.__places_api.places_at([location['lat'], location['long']])
+
+    def get_category_by_location(self, location):
+        result = self._place_at(location)
+        result = result.as_dict()['results']['items']
+        if result:
+            return result[0]
+        else:
+            return None
+
     def get_place_by_location(self, location, category=None):
         try:
             if category:
-                result = self.__places_api.onebox_search([location['long'], location['lat']], category)
+                result = self.__places_api.onebox_search([location['lat'], location['long']], category)
             else:
-                result = self.__places_api.places_at([location['long'], location['lat']])
+                result = self._place_at(location)
             result_list = []
-            for i in range(len(result.as_dict()['results']['items'])):
-                element = result.as_dict()['results']['items'][i]
+            result_dict = result.as_dict()
+            for i in range(len(result_dict['results']['items'])):
+                element = result_dict.as_dict()['results']['items'][i]
                 result_list.append({
                         "location": {
-                        "long": element['position'][0],
-                        "lat": element['position'][1]
+                            "long": element['position'][0],
+                            "lat": element['position'][1]
                         },
                         "distance": element['distance'],
                         "title": element['title'],

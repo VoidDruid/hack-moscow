@@ -68,6 +68,6 @@ class Event(models.Model):
 
 class UserCategory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='categories')
-    category = models.CharField(max_length=100, null=False)
+    category = models.CharField(max_length=100, null=False, choices=CategoryChoices.CHOICES)
     points = models.IntegerField(default=0)
     updated_at = models.DateTimeField(auto_now=True)

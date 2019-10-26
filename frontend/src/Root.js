@@ -5,6 +5,7 @@ import {CheckboxIcon, HomeIcon, MapIcon, SettingsIcon} from "./shared/icons";
 import MapsWrapper from "./shared/MapWrapper";
 import EventsPage from "./pages/EventsPage";
 import Auth from './unloginfront/Auth'
+import { historyStore } from "./store/HistoryStore";
 
 
 const routesList = [
@@ -41,9 +42,15 @@ const routesList = [
         visible:true,
         label: 'logout',
         component: () => {
-            Auth.logout(()=>{})
-            return <Redirect to={{pathname: "/"}} />
+            historyStore.logOut()
+            return <></>
+            /*return <Redirect to={{pathname: "/"}} />*/
         }
+    },
+    {
+        path: '/',
+        notExact: true,
+        component: () =><Redirect to='/' />
     }
 ]
 
@@ -71,7 +78,7 @@ export const Root = () => <div className="root-container">
         <Switch>
             {
                 routesList.map(
-                    route => <Route key={2 + route.label} path={route.path} exact component={route.component}/>
+                    route => <Route key={2 + route.label} path={route.path} exact={!route.notExact} component={route.component}/>
                 )
             }
         </Switch>

@@ -2,7 +2,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from northstar.models import *
 from northstar.serializers import *
-
+from northstar.models.categories import categories_json
 from here import HERE
 
 
@@ -28,6 +28,16 @@ class OrganisationsListView(generics.ListCreateAPIView):
     """
     queryset = Organization.objects.all()
     serializer_class = OrganizationSerializer
+
+
+class CategoriesListView(generics.ListAPIView):
+    """
+        Categories
+    """
+    serializer_class = None
+
+    def list(self, request, *args, **kwargs):
+        return Response(categories_json)
 
 
 class PlacesListView(generics.ListAPIView):

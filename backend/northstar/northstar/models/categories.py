@@ -57,3 +57,4 @@ categories_json = [{'id': 'eat-drink', 'title': 'Eat & Drink'}, {'id': 'restaura
                    {'id': 'mountain-hill', 'title': 'Mountain or Hill'},
                    {'id': 'undersea-feature', 'title': 'Undersea Feature'},
                    {'id': 'forest-heath-vegetation', 'title': 'Forest, Heath or Other Vegetation'}]
+

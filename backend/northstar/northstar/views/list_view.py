@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework.response import Response
-from northstar.models import User, Event
-from northstar.serializers import UserSerializer, EventSerializer
+from northstar.models import *
+from northstar.serializers import *
 
 from here import HERE
 
@@ -20,6 +20,14 @@ class EventListView(generics.ListCreateAPIView):
     """
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+
+
+class OrganisationsListView(generics.ListCreateAPIView):
+    """
+        Organisations
+    """
+    queryset = Organization.objects.all()
+    serializer_class = OrganizationSerializer
 
 
 class PlacesListView(generics.ListAPIView):

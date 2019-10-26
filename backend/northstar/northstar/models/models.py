@@ -18,6 +18,8 @@ class CategoryChoices:
     def to_list(self):
         return [choice[1] for choice in self.CHOICES]
 '''
+
+
 class SexChoices:
     MALE = 'M'
     FEMALE = 'F'

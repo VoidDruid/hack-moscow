@@ -35,3 +35,10 @@ class Event(models.Model):
     type = models.CharField(max_length=100, null=True, choices=EventType.CHOICES)
     long = models.FloatField(null=False)
     lat = models.FloatField(null=False)
+
+
+class UserCategory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='categories')
+    category = models.CharField(max_length=100, null=False)
+    points = models.IntegerField(default=0)
+    updated_at = models.DateTimeField(auto_now=True)

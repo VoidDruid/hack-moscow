@@ -18,7 +18,7 @@ app = FastAPI()
 
 
 @app.post("/users/{uid}/location")
-async def create_item(uid : str, item: WriteLocation):
+async def create_item(uid: str, item: WriteLocation):
     try:
         redis_db.lpush(uid, json.dumps(item))
     except:

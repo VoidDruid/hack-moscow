@@ -13,14 +13,21 @@ def full_cache_key(prefix, key):
     return '{}{}{}'.format(prefix, REDIS_KEY_SEPARATOR, key)
 
 
+def strip_cache_key(key):
+    return key.split(REDIS_KEY_SEPARATOR)[-1]
+
+
 class BaseRedisSyncStorage(object):
     def __init__(self, redis_conn, key_prefix, ttl=REDIS_CACHE_TTL):
-        self.conn : Redis = redis_conn
+        self.conn: Redis = redis_conn
         self.key_prefix = key_prefix
         self._ttl = ttl
 
-    def lpush(self, name, values):
-        self.conn.lpush(name, values)
+    def lpush(self, key, values):
+        return self.conn.lpush(full_cache_key(self.key_prefix, key), values)
+
+    def rpop(self, key):
+        return self.conn.rpop(full_cache_key(self.key_prefix, key))
 
     def _get(self, key=None):
         return self.conn.get(full_cache_key(self.key_prefix, key))
@@ -61,3 +68,6 @@ class BaseRedisSyncStorage(object):
 
     def remove(self, key):
         return self.remove_multi([key])
+
+    def __iter__(self):
+        yield from map(lambda key: strip_cache_key(key.decode('utf-8')), self.conn.scan_iter())

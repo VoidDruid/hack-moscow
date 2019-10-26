@@ -4,6 +4,7 @@ import string
 from django.core.management.base import BaseCommand
 
 from northstar.models import Organization
+from .organizations import new_places
 
 
 class Command(BaseCommand):
@@ -13,11 +14,11 @@ class Command(BaseCommand):
 
     @staticmethod
     def password_generator():
-        return ''.join(random.choice(string.hexdigits) for _ in range(25))
+        return (''.join(random.choice(string.hexdigits) for _ in range(25))).encode()
 
     def handle(self, *args, **options):
-        for _ in range(100):
-            sex = random.choice(self.list_of_sex)
-            age = random.choice(self.list_of_ages)
-            uid = self.uid_generator()
-            User(uid=uid, sex=sex, age=age).save()
+        for pl in new_places:
+            Organization(login=self.login_generator(), password=self.password_generator(), address="address",
+                         category=pl['category'], long=pl['location']['long'],
+                         lat=pl['location']['lat'],
+                         title=pl['title']).save()

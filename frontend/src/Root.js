@@ -2,6 +2,7 @@ import React from "react";
 import {Redirect, Link, Switch, Route, BrowserRouter} from "react-router-dom";
 import './style.css'
 import {HMap} from "./shared/HMap/HMap";
+import { longStackSupport } from "q";
 
 const routesList = [
     {
@@ -34,8 +35,10 @@ const routesList = [
     },
     {
         path: '/logout',
+        visible: true,
+        label: 'logout',
         component: () => {
-            alert('logout');
+            localStorage.setItem('isLogin', false)
             return <Redirect to={'/login'} />
         }
     }

@@ -26,6 +26,7 @@ services:
       - redis
     volumes:
       - "./kraken:/app"
+      - "./common:/common"
   northstar:
     network_mode: host
     restart: unless-stopped

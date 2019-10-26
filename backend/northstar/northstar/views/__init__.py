@@ -1,2 +1,2 @@
-from .list_view import UserListView, PlacesListView
-from .detailed_view import UserDetailView
+from .list_view import UserListView, PlacesListView, EventListView
+from .detailed_view import UserDetailView, EventDetailView

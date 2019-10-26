@@ -30,8 +30,8 @@ class HerePlacesApi:
                 element = result_dict['results']['items'][i]
                 result_list.append({
                         "location": {
-                            "long": element['position'][0],
-                            "lat": element['position'][1]
+                            "long": element['position'][1],
+                            "lat": element['position'][0],
                         },
                         "distance": element['distance'],
                         "title": element['title'],

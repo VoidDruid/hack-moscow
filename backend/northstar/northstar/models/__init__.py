@@ -1,1 +1,1 @@
-from .models import User, UserCategory, Event
+from .models import *

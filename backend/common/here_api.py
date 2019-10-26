@@ -33,8 +33,11 @@ class HereWrapper:
             params=request_params
         )
         if not result.ok:
+            raise ConnectionError('Could not reach HERE API')
+        result = result.json()['results']['items']
+        if not result:
             return None
-        return result.json()['results']['items'][0]
+        return result[0]
 
 
 class HerePlacesApi:

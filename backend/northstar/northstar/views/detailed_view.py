@@ -4,7 +4,7 @@ from northstar.serializers import *
 from northstar.models import *
 
 
-class UserDetailView(generics.RetrieveAPIView):
+class UserDetailView(generics.RetrieveUpdateAPIView):
     """
         Get User by UID
     """

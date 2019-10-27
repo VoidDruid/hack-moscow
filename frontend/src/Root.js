@@ -5,6 +5,7 @@ import {CheckboxIcon, ExitIcon, HomeIcon, MapIcon, SettingsIcon} from "./shared/
 import MapsWrapper from "./shared/MapWrapper/MapWrapper";
 import EventsPage from "./pages/EventsPage/EventPage";
 import { historyStore } from "./store/HistoryStore";
+import Settings from './pages/SettingsPage/Settings'
 import {Main} from './pages/MainPage/Main'
 import StatisticsPage from "./pages/StatisticsPage/StatisticsPage";
 

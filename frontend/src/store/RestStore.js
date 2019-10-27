@@ -9,6 +9,9 @@ class RestStore {
     _organisationsListTimer = null;
     _organisationsEventsTimer = null;
 
+    addNewEvent(params){
+        return axios.post(ENDPOINTS.EVENTS, params)
+    }
 
     @action
     getOrganisations(){
@@ -64,7 +67,7 @@ class RestStore {
     }
     @computed get addressPoints(){
         return this.organisationsEvents.map(
-            ({lat, long}) => ({lat,long})
+            ({lat, long, title}) => ({lat,long, title})
         )
     }
 }

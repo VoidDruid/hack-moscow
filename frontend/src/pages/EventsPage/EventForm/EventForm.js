@@ -3,15 +3,14 @@ import './style.css'
 import {observer} from "mobx-react";
 import {eventFormStore} from "../../../store/EventFormStore";
 import {preventDefault} from "leaflet/src/dom/DomEvent";
+import {observable} from "mobx";
 
 @observer
 class EventForm extends React.Component {
-
-    handleChangeTitle = (e) => this.title = e.target.value;
-    handleChangeDescription = (e) => eventFormStore.description = e.target.value;
+    @observable isActiveForm = false;
     handleChangeDate = (e) => eventFormStore.date = e.target.value;
     render() {
-        return <form className="event-form" onSubmit={(e) => e.preventDefault()}>
+        return <form className={`event-form ${this.isActiveForm && 'event-form-active'}`} onSubmit={(e) => e.preventDefault()} onClick={(e) => this.isActiveForm = true}>
             <h2>Add new event</h2>
                 <label htmlFor="event-form-title-field">
                     <h3>Title</h3>
@@ -20,7 +19,7 @@ class EventForm extends React.Component {
                     type="text"
                     id="event-form-title-field"
                     placeholder="Type title for the new event"
-                    onChange={this.handleChangeTitle}
+                    onChange={(e) => eventFormStore.setTitle(e.target.value)}
                 />
                 </label>
                 <label htmlFor="event-form-description-field">
@@ -30,7 +29,7 @@ class EventForm extends React.Component {
                     type="text"
                     id="event-form-description-field"
                     placeholder="Describe your event"
-                    onChange={this.handleChangeDescription}
+                    onChange={(e) => eventFormStore.setDescription(e.target.value)}
                 />
                 </label>
                 <label htmlFor="event-form-date-field">
@@ -40,10 +39,10 @@ class EventForm extends React.Component {
                         type="date"
                         id="event-form-description-field"
                         placeholder="Select the date"
-                        onChange={this.handleChangeDate}
+                        onChange={(e) => eventFormStore.setDate(e.target.value)}
                     />
                 </label>
-                <button className="event-form-submit" onClick={eventFormStore.submit}>
+                <button className="event-form-submit" onClick={() => eventFormStore.submit()}>
                     Create event
                 </button>
             </form>

@@ -4,6 +4,7 @@ class MapStore {
     @observable _isHeatMap = false;
     @observable _isMarkersMap = false;
     @observable _eventMarkers = [];
+    @observable _eventMarkersTitles = [];
     @action toggleHeatMap(){
         this._isHeatMap = !this._isHeatMap;
     }
@@ -18,9 +19,6 @@ class MapStore {
     }
     @computed get isHeatMap(){
         return this._isHeatMap
-    }
-    @action addEventMarker(latlng){
-        // this.
     }
     @computed get eventsMarkers() {
         return this._eventMarkers
@@ -37,9 +35,16 @@ class MapStore {
             1,
             marker)
     }
+    @action setEventMarkersTitles(titles) {
+        this._eventMarkersTitles = titles
+    }
+    @computed get eventMarkersTitles() {
+        return this._eventMarkersTitles
+    }
     reactAddressPoints = reaction(() => rest.addressPoints,
         (adresspoints) => {
             this.setEventMarkers(adresspoints.map(({lat, long}) => [lat,long]))
+            this.setEventMarkersTitles(adresspoints.map(({title}) => title))
         })
     @computed get addressPoints() {
         return rest.organisationsEvents.map(

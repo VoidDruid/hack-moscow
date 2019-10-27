@@ -60,7 +60,7 @@ class MapContainer extends React.Component {
                             }}
                     >
                         <Popup>
-                            <span>{rest.organisationsEvents[idx].title}</span>
+                            <span>{mapStore.eventMarkersTitles && mapStore.eventMarkersTitles[idx]}</span>
                         </Popup>
                     </Marker>
                 )}

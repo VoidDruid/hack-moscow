@@ -6,7 +6,7 @@ import {routes} from './MainRoutes'
 
 export const CentralMain = (props) =>{
     // const routesMap = Routes.map(el => <Route key={el.id} path={el.route} exact component={el.component}></Route>)
-    debugger
+    // debugger
     return(
         <div>
             <div className="container-center">

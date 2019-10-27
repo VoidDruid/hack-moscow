@@ -26,7 +26,11 @@ a {
 }
 .root-menu-item:first-child {
     margin-bottom: auto;
-    padding: 10px 0 0;
+    font-family: Helvetica, serif;
+    font-size: 140%;
+    border-bottom: 2px solid;
+    border-top: 2px solid;
+    padding: 5px 0;
 }
 
 .root-menu-item:last-child {
@@ -39,14 +43,16 @@ a {
     margin-top: 30px;
     margin-bottom: 20px;
     min-width: 80px;
+    transition: filter .1s linear;
 }
 .root-menu-item-icon {
     position: absolute;
     left: 0;
     top: 0;
 }
-.root-menu-item:hover {
-    filter: drop-shadow(1px 1px 3px white);
+.root-menu-item:hover:not(:first-child) {
+    filter: drop-shadow(5px 2px 1px black);
+
 }
 .root-menu-item-link .active {
     filter: hue-rotate(180deg);

@@ -133,7 +133,7 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379/14'
 CELERY_BEAT_SCHEDULE = {
     "export_stats": {
         "task": "northstar.tasks.export_stats",
-        "schedule": 15#60 * 60 * 4,  # once every 4 hours
+        "schedule": 60 * 60 * 4,  # once every 4 hours
     },
 }
 

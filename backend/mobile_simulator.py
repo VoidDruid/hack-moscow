@@ -28,5 +28,5 @@ class MobileSimulator:
             time.sleep(self.period)
 
 
-ms = MobileSimulator(0.4, 'http://localhost:80/api/location/')
+ms = MobileSimulator(0.15, 'http://localhost:80/api/location/')
 ms.run()

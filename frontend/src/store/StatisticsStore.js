@@ -10,7 +10,7 @@ class StatisticsStore {
       const resp = await rest.getStats();
       const _stats = resp.data.Moscow;
       const stats = [];
-      _stats.forEach(stat => {
+      _stats && _stats.forEach(stat => {
         const name = Object.keys(stat)[0];
         const { location, count, category } = stat[name];
         stats.push({

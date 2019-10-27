@@ -68,4 +68,14 @@
         android:layout_marginEnd="120dp"
         android:layout_marginBottom="40dp"
         android:background="@drawable/ic_car"/>
+
+    <ImageButton
+        android:id="@+id/bookmark_btn_ib"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="120dp"
+        android:background="@drawable/ic_bookmark_black"/>
 </RelativeLayout>

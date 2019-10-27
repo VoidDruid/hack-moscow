@@ -56,5 +56,6 @@
                     android:pathPrefix="/gizmos" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.BookmarkActivity" />
     </application>
 </manifest>

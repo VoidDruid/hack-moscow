@@ -26,6 +26,7 @@ import com.hackmoskow.mobile.domain.models.Event;
 import com.hackmoskow.mobile.domain.models.Places;
 import com.hackmoskow.mobile.domain.repository.CategoriesRepository;
 import com.hackmoskow.mobile.presenters.main.MainController;
+import com.hackmoskow.mobile.ui.BookmarkActivity;
 import com.hackmoskow.mobile.ui.EventActivity;
 import com.hackmoskow.mobile.ui.settings.SettingsActivity;
 import com.here.android.mpa.common.GeoCoordinate;
@@ -320,6 +321,12 @@ public class BasicMapActivity extends FragmentActivity {
         }
     }
 
+    @OnClick(R.id.bookmark_ib)
+    public void bookmarkPressed() {
+        Intent intent = new Intent(this, BookmarkActivity.class);
+        startActivity(intent);
+    }
+
     public void showEvents(List<Event> events) {
         map.removeMapObjects(this.events);
         this.events.clear();
@@ -376,6 +383,7 @@ public class BasicMapActivity extends FragmentActivity {
         intent.putExtra("description", event.getDescription());
         intent.putExtra("latitude", event.getLat());
         intent.putExtra("longitude", event.getLongitude());
+        intent.putExtra("type", event.getType());
 
         lastEventCoordinate = new GeoCoordinate(event.getLat(), event.getLongitude());
 

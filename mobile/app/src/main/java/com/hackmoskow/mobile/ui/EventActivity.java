@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.hackmoskow.mobile.R;
+import com.hackmoskow.mobile.domain.models.Event;
+import com.hackmoskow.mobile.domain.repository.BookmarkRepository;
 import com.hackmoskow.mobile.ui.main.BasicMapActivity;
 
 import java.io.IOException;
@@ -35,6 +37,7 @@ public class EventActivity extends Activity {
     private double latitude;
     private double longitude;
     private String title;
+    private String type;
     private String description;
     private boolean isModuleOpened;
 
@@ -60,6 +63,7 @@ public class EventActivity extends Activity {
             longitude = Double.parseDouble(Objects.requireNonNull(uri.getQueryParameter("longitude")));
             description = uri.getQueryParameter("description");
             title = uri.getQueryParameter("title");
+            type = uri.getQueryParameter("type");
 
         } else {
             isModuleOpened = false;
@@ -73,6 +77,7 @@ public class EventActivity extends Activity {
             longitude = intent.getDoubleExtra("longitude", 0);
             description = intent.getStringExtra("description");
             title = intent.getStringExtra("title");
+            type = intent.getStringExtra("type");
         }
     }
 
@@ -110,6 +115,12 @@ public class EventActivity extends Activity {
         startActivity(Intent.createChooser(myIntent, "Share using"));
     }
 
+    @OnClick(R.id.bookmark_btn_ib)
+    public void bookmarkPressed() {
+        BookmarkRepository repository = new BookmarkRepository("bookmark", this);
+        repository.saveEvent(new Event(1, title, type, description, longitude, latitude));
+    }
+
     private String createMessage() {
         try {
             Geocoder gcd = new Geocoder(this, Locale.getDefault());
@@ -130,7 +141,8 @@ public class EventActivity extends Activity {
                 str.append("http://app.hackmoscow/gizmos?title=").append(title.replaceAll(" ", "+"))
                         .append("&description=").append(description.replaceAll(" ", "+"))
                         .append("&latitude=").append(latitude)
-                        .append("&longitude=").append(longitude);
+                        .append("&longitude=").append(longitude)
+                        .append("&type=").append(type);
                 str.append("\n________\n\n");
 
                 str.append("Send from application");

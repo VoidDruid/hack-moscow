@@ -6,6 +6,8 @@ import MapsWrapper from "./shared/MapWrapper/MapWrapper";
 import EventsPage from "./pages/EventsPage/EventPage";
 import Auth from './unloginfront/Auth'
 import { historyStore } from "./store/HistoryStore";
+import Statistics from './pages/StatisticsPage/Statistics';
+import {Main} from './pages/MainPage/Main'
 
 
 const routesList = [
@@ -14,7 +16,7 @@ const routesList = [
         visible: true,
         icon: <HomeIcon />,
         label: 'Main',
-        component: () => <div>main</div>
+        component: () => <Main />
     },
     {
         path: '/map',
@@ -28,7 +30,7 @@ const routesList = [
         visible: true,
         icon: <MapIcon />,
         label: 'Statistics',
-        component: () => <div>statistics</div>
+        component: () => <Statistics></Statistics>
     },
     {
         path: '/settings',

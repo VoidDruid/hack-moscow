@@ -1,0 +1,41 @@
+.main-page-box{
+    background-color:rgb(221, 216, 216);
+    height: 100%;
+    width: 100%;
+}
+
+.main-page-box > main{
+    display: grid;
+    grid-row-gap: 10vh;
+    margin-top: 30px;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.main-page-box > header{
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    padding-top: 34px;
+    height: 7vh;
+    text-align: center;
+    font-size: 1.4em;
+}
+
+.main-page-section{
+    padding: 10px;
+    transition: background .5s linear;
+}
+
+.main-page-section:hover{
+    background-color:rgb(194, 188, 188);
+    border-radius: 6px;
+}
+
+.main-page-header{
+    font-size: 1.2em;
+    border-bottom: 2px solid black;
+    padding-bottom: 3px;
+}
+
+.main-page-description{
+    margin-top: 15px;
+}

@@ -1,13 +1,12 @@
 import React from "react";
-import {Redirect, Link, Switch, Route, BrowserRouter, NavLink} from "react-router-dom";
+import {Redirect, Switch, Route, BrowserRouter, NavLink} from "react-router-dom";
 import './style.css'
 import {CheckboxIcon, ExitIcon, HomeIcon, MapIcon, SettingsIcon} from "./shared/icons";
 import MapsWrapper from "./shared/MapWrapper/MapWrapper";
 import EventsPage from "./pages/EventsPage/EventPage";
-import Auth from './unloginfront/Auth'
 import { historyStore } from "./store/HistoryStore";
-import Statistics from './pages/StatisticsPage/Statistics';
 import {Main} from './pages/MainPage/Main'
+import StatisticsPage from "./pages/StatisticsPage/StatisticsPage";
 
 
 const routesList = [
@@ -29,8 +28,8 @@ const routesList = [
         path: '/statistics',
         visible: true,
         icon: <MapIcon />,
-        label: 'Statistics',
-        component: () => <Statistics></Statistics>
+        label: 'StatisticsPage',
+        component: () => <StatisticsPage />
     },
     {
         path: '/settings',
@@ -47,7 +46,6 @@ const routesList = [
         component: () => {
             historyStore.logOut()
             return <></>
-            /*return <Redirect to={{pathname: "/"}} />*/
         }
     },
     {

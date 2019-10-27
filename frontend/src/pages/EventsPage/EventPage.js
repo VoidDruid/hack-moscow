@@ -7,20 +7,19 @@ import EventsList from "./EventsList/EventsList";
 import EventForm from "./EventForm/EventForm";
 @observer
 class EventsPage extends React.Component{
-    // handleClick = () => mapStore.toggleHeatMap()
     componentDidMount() {
         rest.getOrganisationsEvents();
         mapStore.activateMarkersMap();
     }
     componentWillUnmount() {
         rest.cancelScheduleOrganisationsEventsRequests()
+        mapStore.deactivateMarkersMap()
     }
 
     render() {
         return <div className="event-container">
             <EventForm />
             <EventsList />
-
         </div>
 
     }

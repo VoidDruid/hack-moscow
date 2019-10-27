@@ -7,17 +7,13 @@ import {rest} from "../../../store/RestStore";
 import HeatmapLayer from "react-leaflet-heatmap-layer";
 import {observable} from "mobx";
 import {eventFormStore} from "../../../store/EventFormStore";
+import {statisticsStore} from "../../../store/StatisticsStore";
 @observer
 class MapContainer extends React.Component {
     constructor(props) {
         super(props);
-        // this.marker = React.createRef();
     }
 
-    // handleDrag = () => {
-    //     const coordinates = this.marker.current.leafletElement.getLatLng();
-    //     this.props.handleDrag(this.props.index, [coordinates.lat, coordinates.lng]);
-    // }
 
     handleClick = (e) => {
         console.log(e);
@@ -38,17 +34,18 @@ class MapContainer extends React.Component {
                 attributionControl={this.props.index === 8}
                 onClick = {this.handleClick}
             >
-
                 {mapStore.isHeatMap && <HeatmapLayer
                     fitBoundsOnLoad
                     fitBoundsOnUpdate
-                    points={mapStore.addressPoints}
+                    points={statisticsStore.heatPoints}
                     longitudeExtractor={m => m[1]}
                     latitudeExtractor={m => m[0]}
-                    intensityExtractor={m => parseFloat(m[2])} />}
+                    intensityExtractor={m => m[2]} />}
                 <TileLayer
                     url={hereTileUrl(this.props.style)}
                 />
+
+
                 {mapStore._isMarkersMap && mapStore.eventsMarkers.map((position, idx) =>
                     <Marker key={`marker-${idx}`}
                             position={position}
@@ -63,16 +60,9 @@ class MapContainer extends React.Component {
                             <span>{mapStore.eventMarkersTitles && mapStore.eventMarkersTitles[idx]}</span>
                         </Popup>
                     </Marker>
-                )}
-                {/*{mapStore._isMarkersMap && mapStore.eventsMarkers.map(*/}
-                {/*    (latlng) => {*/}
-                {/*        return <Marker*/}
-                {/*        position={latlng}*/}
-                {/*        // draggable={true}*/}
-                {/*        // onDragEnd={this.handleDrag}*/}
-                {/*        ref={this.marker}*/}
 
-                {/*    />}*/}
+                )}
+
                 )
                     }
                 {

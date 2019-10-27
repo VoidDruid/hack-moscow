@@ -17,9 +17,22 @@ class MapStore {
     @computed get isMarkersMap() {
         return this._isMarkersMap
     }
+    @action
+    activateHeatMap(){
+        this._isHeatMap = true;
+    }
+    @action
+    deactivateHeatMap(){
+        this._isHeatMap = false;
+    }
+    @action
+    disableMarkerMap() {
+        this._isMarkersMap = false;
+    }
     @computed get isHeatMap(){
         return this._isHeatMap
     }
+
     @computed get eventsMarkers() {
         return this._eventMarkers
     }

@@ -1,0 +1,16 @@
+.statistics-container {
+    background: linear-gradient(90deg, #323a51 0%,#302b63 50%,#323a51 100% );
+    display: flex;
+    flex-direction: column;
+    color: #f7f7ff;
+
+}
+.statistics-container > header {
+    margin-bottom: 20px;
+
+}
+.statistics-container > * {
+    padding-left: 20px;
+    background: linear-gradient(90deg, #323a51 0%,#302b63 50%,#323a51 100% );
+
+}

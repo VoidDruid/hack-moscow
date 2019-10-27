@@ -29,6 +29,12 @@ class RestStore {
         )
 
     }
+
+    @action
+    getStats() {
+        return axios.get(ENDPOINTS.STATS)
+    }
+
     @computed get organisationsNamesList() {
         return this._organisationsList.map(
             org => org.login

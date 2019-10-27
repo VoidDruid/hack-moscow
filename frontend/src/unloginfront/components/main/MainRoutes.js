@@ -1,7 +1,8 @@
 import React from 'react';
 import {MainComp} from './elements/Main';
 import SignIn from './elements/SignIn';
-import {Redirect} from 'react-router-dom';
+import SignUp from './elements/SignUp';
+import {About} from './elements/About';
 
 export const routes = [
     {
@@ -20,12 +21,12 @@ export const routes = [
         id: 2,
         label: "Sign Up",
         route: "/signup",
-        component: () => <div>Sign Up</div>
+        component: () => <SignUp></SignUp>
     },
     {
         id: 3,
         label: "About project",
         route: "/about",
-        component: () => <div>About</div>
+        component: () => <About></About>
     },
 ]

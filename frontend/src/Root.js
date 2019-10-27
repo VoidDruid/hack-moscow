@@ -7,7 +7,8 @@ import EventsPage from "./pages/EventsPage/EventPage";
 import Auth from './unloginfront/Auth'
 import { historyStore } from "./store/HistoryStore";
 import Statistics from './pages/StatisticsPage/Statistics';
-import {Main} from './pages/MainPage/Main'
+import {Main} from './pages/MainPage/Main';
+import Settings from './pages/SettingsPage/Settings'
 
 
 const routesList = [
@@ -37,7 +38,7 @@ const routesList = [
         visible: true,
         icon: <SettingsIcon />,
         label: 'Settings',
-        component: () => <div>settings</div>
+        component: () => <Settings></Settings>
     },
     {
         path: '/logout',

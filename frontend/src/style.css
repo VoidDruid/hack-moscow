@@ -150,6 +150,24 @@ body {
     color: white;
 }
 
+.image-box-about{
+    background:linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://cdn2.hubspot.net/hubfs/2174253/here-maps-ionic-framework.gif');
+    /*filter: brightness(60%);*/
+
+    height: 42vh;
+    border-radius: 7px;
+    padding-top: 150px;
+    margin-top: 20%;
+    font-size: 2em;
+    color: white;
+}
+
+.image-box-about > div {
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 4%;
+}
+
 .form-box{
     background:rgb(221, 216, 216);
     /*filter: brightness(60%);*/
@@ -160,6 +178,22 @@ body {
     margin-top: 20%;
     display: grid;
     grid-template-rows: repeat(4,1fr);
+    color: white;
+    font-family: bold Helvetica, Arial, Sans-Serif;
+    text-shadow: 1px 1px #0f9145, 2px 2px #0f9145, 3px 3px #0f9145;
+    font-size: 2em;
+}
+
+.form-box-up{
+    background:rgb(221, 216, 216);
+    /*filter: brightness(60%);*/
+
+    height: 42vh;
+    border-radius: 7px;
+    padding: 30px;
+    margin-top: 20%;
+    display: grid;
+    grid-template-rows: repeat(5,1fr);
     color: white;
     font-family: bold Helvetica, Arial, Sans-Serif;
     text-shadow: 1px 1px #0f9145, 2px 2px #0f9145, 3px 3px #0f9145;

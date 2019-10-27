@@ -24,7 +24,7 @@ import { historyStore } from '../../../../store/HistoryStore';
                     <input type="text" value={this.login} placeholder="example@here.com" onChange={(e)=>{this.login = e.target.value}}></input>
                 </div>
                 <div className="form-field">
-                    <input type="password" value={this.password} placeholder="12345678" onChange={(e)=>{this.password = e.target.value}}></input>
+                    <input type="password" value={this.password} placeholder="********" onChange={(e)=>{this.password = e.target.value}}></input>
                 </div>
                 <button className="form-button" onClick={this.handleClick}>
                     Log in

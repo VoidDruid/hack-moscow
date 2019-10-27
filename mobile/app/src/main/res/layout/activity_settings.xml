@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <CheckBox
+        android:id="@+id/male_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="120dp"
+        android:text="Male" />
+
+    <CheckBox
+        android:id="@+id/female_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"
+        android:text="Female" />
+
+    <CheckBox
+        android:id="@+id/other_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="20dp"
+        android:text="Other" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/age_et"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toStartOf="@id/age_et"
+        android:text="Age: "
+        android:textSize="@dimen/text_size_20" />
+
+    <EditText
+        android:id="@+id/age_et"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/male_cb"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/save_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/age_et"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:text="SAVE" />
+
+    <TextView
+        android:id="@+id/error_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/age_et"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:text="Age is not correct"/>
+</RelativeLayout>

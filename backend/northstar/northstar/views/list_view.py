@@ -1,3 +1,5 @@
+from datetime import datetime, timezone, timedelta
+
 from django.db.models import Sum
 from rest_framework import generics
 from rest_framework.response import Response
@@ -41,6 +43,7 @@ class CategoriesListView(generics.ListAPIView):
     """
         Categories
     """
+    queryset = None
     serializer_class = None
 
     def list(self, request, *args, **kwargs):
@@ -104,7 +107,18 @@ class PlacesStats(generics.ListAPIView):
     serializer_class = None
 
     def list(self, request, *args, **kwargs):
-        stats = PlacesStatistics.objects.order_by('-created_at').first()
+        boundary = request.GET.get('at')
+        if boundary:
+            try:
+                boundary_date = datetime.fromtimestamp(int(boundary), tz=timezone(timedelta(hours=3)))
+            except:
+                return Response({'ok': False, 'error': "Could not parse 'at' param"})
+            stats = PlacesStatistics.objects \
+                .filter(created_at__gte=boundary_date) \
+                .order_by('created_at') \
+                .first()
+        else:
+            stats = PlacesStatistics.objects.order_by('-created_at').first()
         result = {}
         if stats:
             result = stats.data

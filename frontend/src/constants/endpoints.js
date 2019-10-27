@@ -1,5 +1,6 @@
 export const ENDPOINTS = {
     ORGANISATIONS: '/org',
     EVENTS: '/org/event',
-    USERS: '/users'
+    USERS: '/users',
+    STATS: '/stats/place'
 };

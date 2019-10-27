@@ -3,17 +3,11 @@ import { Map, TileLayer, Marker, Polygon, Popup} from 'react-leaflet';
 import { hereTileUrl } from '../here';
 import {observer} from 'mobx-react'
 import {mapStore} from "../../../store/MapStore";
-import {rest} from "../../../store/RestStore";
 import HeatmapLayer from "react-leaflet-heatmap-layer";
-import {observable} from "mobx";
 import {eventFormStore} from "../../../store/EventFormStore";
 import {statisticsStore} from "../../../store/StatisticsStore";
 @observer
 class MapContainer extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
 
     handleClick = (e) => {
         console.log(e);

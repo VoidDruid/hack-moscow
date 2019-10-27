@@ -1,6 +1,5 @@
 import React from 'react';
 import  MapContainer  from './MapContainer/MapContainer';
-import { hereIsolineUrl, maxIsolineRangeLookup } from './here';
 import {observer} from 'mobx-react'
 import {observable} from "mobx";
 
@@ -21,12 +20,6 @@ class MapsWrapper extends React.Component {
     }
 
     render() {
-        console.log(this.mapOptions)
-        const max = this.mapOptions.type === 'distance' ?
-            maxIsolineRangeLookup.distance :
-            maxIsolineRangeLookup.time;
-
-        const sliderVal = this.mapOptions.range > max ? max : this.mapOptions.range;
 
         return (
             <div>

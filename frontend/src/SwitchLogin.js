@@ -3,7 +3,6 @@ import {Root} from './Root';
 import {LandingPage} from './unloginfront/LandingPage';
 import {ProtectedRoute} from './unloginfront/ProtectedRoute';
 import {BrowserRouter,Switch,Route} from 'react-router-dom';
-import Auth from './unloginfront/Auth'
 import {historyStore} from './store/HistoryStore'
 import {observer} from 'mobx-react'
 

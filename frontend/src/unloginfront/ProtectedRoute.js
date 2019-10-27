@@ -1,12 +1,8 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import Auth from "./Auth";
-import {historyStore} from "../store/HistoryStore";
+import { historyStore } from "../store/HistoryStore";
 
-export const ProtectedRoute = ({
-  component: Component,
-  ...rest
-}) => {
+export const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}

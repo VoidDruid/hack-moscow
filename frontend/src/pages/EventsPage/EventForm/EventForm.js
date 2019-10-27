@@ -2,13 +2,11 @@ import React from 'react'
 import './style.css'
 import {observer} from "mobx-react";
 import {eventFormStore} from "../../../store/EventFormStore";
-import {preventDefault} from "leaflet/src/dom/DomEvent";
 import {observable} from "mobx";
 
 @observer
 class EventForm extends React.Component {
     @observable isActiveForm = false;
-    handleChangeDate = (e) => eventFormStore.date = e.target.value;
     render() {
         return <form className={`event-form ${this.isActiveForm && 'event-form-active'}`} onSubmit={(e) => e.preventDefault()} onClick={(e) => this.isActiveForm = true}>
             <h2>Add new event</h2>
@@ -26,7 +24,6 @@ class EventForm extends React.Component {
                     <h3>description</h3>
                 <textarea
                     value={eventFormStore.description}
-                    type="text"
                     id="event-form-description-field"
                     placeholder="Describe your event"
                     onChange={(e) => eventFormStore.setDescription(e.target.value)}

@@ -1,1 +1,0 @@
-from northstar.models import *

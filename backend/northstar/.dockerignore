@@ -1,8 +1,9 @@
 # User
+# User
 *.sqbpro
-*.db
-*.db.*
+.db
 
+### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -102,7 +103,6 @@ celerybeat-schedule
 *.sage.py
 
 # Environments
-northstar/.env
 .venv
 env/
 venv/
@@ -127,3 +127,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+

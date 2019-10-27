@@ -1,11 +1,29 @@
 .event-form {
+    cursor: pointer;
     display: flex;
     flex-direction: column;
-    padding-bottom: 10px;
     background-color: #323a51;
     filter: hue-rotate(15deg);
     align-items: flex-start;
     color: #f7f7ff;
+
+
+    /*opacity:0;*/
+    height: 100px;
+    padding: 0 8px;
+    overflow: hidden;
+    transition: all .2s ease .15s;
+}
+.event-form:hover{
+    background-color: #5e698b;
+}
+.event-form-active {
+    padding-bottom: 10px;
+    opacity:1;
+    height: 550px;
+}
+.event-form-active:hover {
+    background-color: #323a51;
 }
 
 .event-form > * {

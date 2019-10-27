@@ -10,9 +10,9 @@ class MobileSimulator:
         self.period = period
         self.session = Session()
         self.route = route
-        self.distribution = [0.0015 * x for x in range(50)]
-        self.longs = [37.618423 + x for x in self.distribution]
-        self.lats = [55.751244 + x for x in self.distribution]
+        self.distribution = [0.003 * (x - 50) for x in range(100)]
+        self.longs = [37.617664 + x for x in self.distribution]
+        self.lats = [55.752121 + x for x in self.distribution]
         self.durations = [x for x in range(60)]
 
     def run(self):
@@ -24,7 +24,7 @@ class MobileSimulator:
                 "city": "Moscow"
             }
             result = self.session.post(self.route + str(random.randint(1, 20)), data=json.dumps(data))
-            print(result.text, data)
+            print(result.json(), data)
             time.sleep(self.period)
 
 

@@ -56,6 +56,7 @@ def process_value(key, value):
         redis_cities.hset(location.city, location.title, counter)
         redis_cities.hset(location.city, f'{location.title}{CITY_DATA_SEP}lat', location.lat)
         redis_cities.hset(location.city, f'{location.title}{CITY_DATA_SEP}long', location.long)
+        redis_cities.hset(location.city, f'{location.title}{CITY_DATA_SEP}cat', location.category.id)
 
         user_query = User.objects.filter(uid=key)
         if not user_query.exists():

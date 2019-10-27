@@ -14,20 +14,23 @@ def export_stats():
         city_data = []
         for key in redis_cities.hkeys(city):
             key = key.decode()
-            print(key)
             if CITY_DATA_SEP in key:
                 continue
             try:
                 city_data.append({
                     key: {
                         'count': int(redis_cities.hget(city, key)),
-                        'lat': float(redis_cities.hget(city, f'{key}{CITY_DATA_SEP}lat')),
-                        'long': float(redis_cities.hget(city, f'{key}{CITY_DATA_SEP}long')),
+                        'location': {
+                            'lat': float(redis_cities.hget(city, f'{key}{CITY_DATA_SEP}lat')),
+                            'long': float(redis_cities.hget(city, f'{key}{CITY_DATA_SEP}long')),
+                        },
+                        'category': redis_cities.hget(city, f'{key}{CITY_DATA_SEP}cat').decode(),
                     },
                 })
             except Exception as e:
-                print(e)
+                print(f"Error in export_stats for key '{key}': '{e}'")
         city_data.sort(key=lambda val: list(val.values())[0]['count'], reverse=True)
         data[city] = city_data[:250]
     PlacesStatistics(data=data).save()
+    redis_cities.flush()
     print('Finished exporting stats')

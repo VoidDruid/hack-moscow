@@ -83,3 +83,6 @@ class BaseRedisSyncStorage(object):
 
     def hkeys(self, name):
         return self.conn.hkeys(full_cache_key(self.key_prefix, name))
+
+    def flush(self):
+        return self.conn.flushdb()

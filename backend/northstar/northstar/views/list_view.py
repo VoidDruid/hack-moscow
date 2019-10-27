@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from rest_framework import generics
 from rest_framework.response import Response
 from northstar.models import *
@@ -86,3 +87,25 @@ class EventByOrgListView(generics.ListAPIView):
 
     def get_queryset(self):
         return self.queryset.filter(organization=self.kwargs['id'])
+
+
+class CategoryStats(generics.ListAPIView):
+    serializer_class = None
+
+    def list(self, request, *args, **kwargs):
+        queryset = UserCategory.objects \
+            .values('category') \
+            .annotate(score=Sum('points')) \
+            .order_by('-points')
+        return Response({v['category']: v['score'] for v in queryset})
+
+
+class PlacesStats(generics.ListAPIView):
+    serializer_class = None
+
+    def list(self, request, *args, **kwargs):
+        stats = PlacesStatistics.objects.order_by('-created_at').first()
+        result = {}
+        if stats:
+            result = stats.data
+        return Response(result)

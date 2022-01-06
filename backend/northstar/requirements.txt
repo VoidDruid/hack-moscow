@@ -1,5 +1,5 @@
 Django==2.2.4
-Celery==4.3.0
+Celery==5.2.2
 django-cors-headers==3.1.0
 django-extensions==2.2.1
 djangorestframework==3.10.2
